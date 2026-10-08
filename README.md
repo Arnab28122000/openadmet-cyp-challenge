@@ -2,10 +2,21 @@
 
 **Entry:** `talindrew` (HuggingFace `arnab2812`) · Regression (direct inhibition) track
 **Data:** challenge release only. No proprietary data.
+**Published:** https://github.com/Arnab28122000/openadmet-cyp-challenge (verified HTTP 200,
+2026-10-08). A reachable `https://` method report is **mandatory** before 2026-11-03 23:59
+UTC or the entry is excluded from the final leaderboard regardless of score.
 
 ---
 
 ## 1. Summary
+
+**Measured effect on the live leaderboard: rank 172 → 74 of 265.** Macro ST-RAE 0.8663 →
+**0.5925**, macro R² 0.0748 → **0.4472**, macro Spearman ρ 0.6212 → **0.7093**. Per isoform,
+CYP1A2 0.88 → 0.549, CYP2C9 0.52 → 0.505, CYP2D6 **1.46 → 0.746**, CYP3A4 0.57 → 0.571.
+
+ρ rose, and the affine placement in §4 is monotone and therefore *cannot* change ρ — so the
+two effects separate cleanly: the interval labels of §2 moved the model, the placement moved
+the level.
 
 Three things carry this entry, in descending order of measured effect:
 
@@ -95,6 +106,27 @@ The targets actually submitted were chosen by a **minimax** scan over the uncert
 Because the map is monotone, **ρ and τ must return bit-identical from the board** — a
 free end-to-end check, used three times.
 
+### Recovering the targets from the leaderboard rather than guessing them
+
+The targets above were chosen by minimax because the population is blinded. That was a
+mistake worth recording: **the board reports enough to solve for the population directly.**
+For a prediction vector held on disk, with `r = 2 sin(πρ/6)` from the reported Spearman,
+
+    s² = s_y² + s_p² − 2 r s_y s_p          and      m² + s² = (1 − R²) s_y²
+
+is two equations in the two unknowns `s_y` and `m = ȳ − p̄`. Solved on our own row this gives
+per-isoform test sd **1.44 / 0.97 / 1.66 / 1.16**, which reproduces an independently published
+reverse-engineering of the same quantities to **3.8–12.3 %** by an unrelated route. R² and MAE
+depend on `m` only through `m²`, so the algebra cannot sign the offset; scoring both branches
+against that independent estimate picks the same sign on all four isoforms with 5×
+discrimination.
+
+The consequence: minimaxing over a band wider than the truth does not buy safety. The scan
+chose **sd 0.10 for CYP2D6**, which inverts to an assumed `r = 0.209` — below the floor of the
+band it was told to search — against a measured `r = 0.518`. Five routes sharing no
+assumptions (including a distribution-free bound from `MAE ≤ RMSE` and `R² ≤ r²`, which needs
+no distributional assumption at all) agree that every isoform was placed too narrow.
+
 Implementation: `drugrx/cyp/placement.py`, `drugrx/cyp/decide.py`,
 `scripts/cyp_submit.py`.
 
@@ -115,10 +147,21 @@ against a 4,001-point grid on 600 random cases. Two consequences that cost real 
 
 - **External inactives do not substitute for the challenge's own screen.** 10.5k Veith
   bounds made things *worse*: macro V2 **+0.038**, 3/3 seeds.
-- **More training does not help.** 300 → 3,000 epochs moved the score by **−0.0000**,
-  identical per endpoint to four decimal places. Without early stopping the 3,000-epoch
-  runs bottom out at epoch 190–365 then rise monotonically, ending 10–17 % worse than
-  their own best. Capacity is similar: doubling width bought 0.013.
+- **More training does not help, tested to 30,000 epochs.** 300 → 3,000 epochs moved the
+  score by **−0.0000**, identical per endpoint to four decimal places. At 30,000 epochs with
+  cosine warm restarts (`T_0=468, T_mult=2`) the gain over 1,200 epochs is **−0.0026 against
+  a seed spread of 0.0052** — half the noise of reseeding, for 25× the compute; the run peaked
+  at epoch 7,025 and was flat for the remaining 23,000. `ReduceLROnPlateau` at the same budget
+  is *worse* (best at epoch 25): our validation signal is noisy at the 0.005 level, so the
+  scheduler decays on noise and reaches its LR floor by epoch 650. Without early stopping the
+  3,000-epoch runs bottom out at epoch 190–365 then rise monotonically, ending 10–17 % worse
+  than their own best. Capacity is similar: doubling width bought 0.013.
+- **A pretrained molecular foundation model did not beat ECFP, but its loss function did.**
+  CheMeleon's frozen 2048-d D-MPNN fingerprint lost to count-ECFP + descriptors under the same
+  GBM (0.6433 vs 0.5819 macro on our validation surface). Fine-tuning it end-to-end under the
+  *metric's own interval hinge* scored **0.5179 ± 0.0130**, beating every frozen arm — but
+  embeddings read back out of that fine-tuned encoder score 0.5862/0.5886, i.e. no better than
+  frozen ECFP. The gain is in training against the metric, not in the representation.
 - **Concatenating feature blocks hurt.** CheMeleon ⊕ ECFP scored worse than either alone
   under the same in-context model.
 
@@ -140,9 +183,10 @@ Recorded because they were silent failures that looked healthy:
 
 ## 8. Code
 
-The method is fully specified above. The implementation lives in a private
-monorepo; a standalone extract of the four modules named in this report can be
-published on request.
+This report is published at **https://github.com/Arnab28122000/openadmet-cyp-challenge**.
+The training code is not published, so the submission's *My code is open-source* box is left
+unchecked; every method above is specified to the level needed to reimplement it, and the
+file and function names given per section are the ones used.
 
 ---
 
