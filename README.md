@@ -1,9 +1,10 @@
 # OpenADMET CYP Blind Challenge — method report
 
-**Entry:** `talindrew` (HuggingFace `arnab2812`) · Regression (direct inhibition) track
+**Entry:** `talindrew` (HuggingFace `arnab2812`) · Regression (direct inhibition) **and**
+TDI (classification) tracks
 **Data:** challenge release only. No proprietary data.
 **Published:** https://github.com/Arnab28122000/openadmet-cyp-challenge (verified HTTP 200,
-2026-10-08). A reachable `https://` method report is **mandatory** before 2026-11-03 23:59
+2026-10-09). A reachable `https://` method report is **mandatory** before 2026-11-03 23:59
 UTC or the entry is excluded from the final leaderboard regardless of score.
 
 ---
@@ -165,7 +166,39 @@ against a 4,001-point grid on 600 random cases. Two consequences that cost real 
 - **Concatenating feature blocks hurt.** CheMeleon ⊕ ECFP scored worse than either alone
   under the same in-context model.
 
-## 7. Reproducibility notes and known bugs we fixed
+## 7. The TDI classification track
+
+A separate submission, same release, no extra data: per-isoform binary classifiers for
+`CYP2D6_is_TDI` and `CYP3A4_is_TDI`. Board: **macro MCC 0.2964**, rank 71 of 153 (CYP2D6
+0.2291, CYP3A4 0.3637).
+
+The one idea worth reporting is that **the operating point can be chosen against the blinded
+test set's own class balance, because the leaderboard gives that balance away.** For a binary
+task `TP = R·π = P·q`, and `Accuracy = 1 − π − q + 2Rπ`, so
+
+    π = (1 − Accuracy) / (1 + Recall/Precision − 2·Recall)
+
+Every entry is scored on the same test set, so π must agree across entries — and that
+agreement is the validation. It agrees to **sd 0.00018** (CYP2D6, 145 entries) and **sd
+0.00008** (CYP3A4, 152 entries): π = **0.0706** and **0.2916**. MCC then has a closed form,
+
+    MCC = √(π/(1−π)) · (R − q) / √(q(1−q))
+
+verified against sklearn to 3.3e-16, and it reproduces our own reported MCC to 0.001. Our
+thresholds had been tuned where the positive rate was 0.195 against a true prevalence of
+0.0706: thresholding by *probability value* does not transfer when the probability scale
+shifts, thresholding by **rate** does. Moving CYP3A4's rate from 0.473 to 0.313 was worth
+**+0.0138 MCC**, measured against the test ROC rather than assumed.
+
+The same row also gives the realised operating point, `FPR = (q − Rπ)/(1 − π)`, and one
+(TPR, FPR) pins an equal-variance binormal ROC. That yields a **measured test AUC of 0.762
+(CYP2D6) and 0.764 (CYP3A4)** against validation values of 0.728 and 0.813 — biased in
+opposite directions, which is why a pre-registered macro MCC of 0.318 came back 0.296. An ROC
+is prevalence-independent; it is not dataset-independent. At the realised ROC both thresholds
+are now within **0.0006 macro MCC** of optimal, so the remaining lever on this track is the
+ranker, not the cut.
+
+## 8. Reproducibility notes and known bugs we fixed
 
 Recorded because they were silent failures that looked healthy:
 
@@ -181,7 +214,7 @@ Recorded because they were silent failures that looked healthy:
   readout, so on an isoform whose promotion excludes weak bins (exactly CYP2D6) a plainly
   inactive compound could be labelled **active**.
 
-## 8. Code
+## 9. Code
 
 This report is published at **https://github.com/Arnab28122000/openadmet-cyp-challenge**.
 The training code is not published, so the submission's *My code is open-source* box is left
@@ -190,5 +223,5 @@ file and function names given per section are the ones used.
 
 ---
 
-*Report drafted 2026-10-08. Metric: macro-averaged soft-threshold relative absolute error
+*Report drafted 2026-10-08, revised 2026-10-09. Metric: macro-averaged soft-threshold relative absolute error
 against the published credible intervals; 1.0 = as good as predicting the mean.*
