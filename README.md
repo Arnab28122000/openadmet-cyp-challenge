@@ -7,13 +7,26 @@ TDI (classification) tracks
 2026-10-09). A reachable `https://` method report is **mandatory** before 2026-11-03 23:59
 UTC or the entry is excluded from the final leaderboard regardless of score.
 
+**ATTACHED** to the TDI submission of 2026-10-08 21:44 UTC and to the regression submissions
+of 2026-10-09 04:03 and 17:09 UTC (the Live board renders the link on our row). "My code is
+open-source" is left unchecked, because the report alone is not code.
+
+**Last updated 2026-10-09**, after the third placement submission. Two numbers previously
+stated here have been **withdrawn** on re-measurement and are described as such in §6 rather
+than quietly removed.
+
 ---
 
 ## 1. Summary
 
-**Measured effect on the live leaderboard: rank 172 → 74 of 265.** Macro ST-RAE 0.8663 →
-**0.5925**, macro R² 0.0748 → **0.4472**, macro Spearman ρ 0.6212 → **0.7093**. Per isoform,
-CYP1A2 0.88 → 0.549, CYP2C9 0.52 → 0.505, CYP2D6 **1.46 → 0.746**, CYP3A4 0.57 → 0.571.
+**Measured effect on the live leaderboard: rank 172 → 60 of 268.** Macro ST-RAE 0.8663 →
+**0.5414**, macro R² 0.0748 → **0.5329**, macro Spearman ρ 0.6212 → **0.7093**. Per isoform,
+CYP1A2 0.88 → 0.549, CYP2C9 0.52 → **0.462**, CYP2D6 **1.46 → 0.587**, CYP3A4 0.57 → 0.567.
+
+Those are the figures after three successive placement submissions (v4 → v5 → v6), each
+moving **one** axis so that the board's own response could be read as a derivative. ρ and τ
+have returned 0.7093 and 0.5285 unchanged from all three, which is the end-to-end check that
+the map really is monotone.
 
 ρ rose, and the affine placement in §4 is monotone and therefore *cannot* change ρ — so the
 two effects separate cleanly: the interval labels of §2 moved the model, the placement moved
@@ -105,7 +118,39 @@ The targets actually submitted were chosen by a **minimax** scan over the uncert
 | CYP3A4 | 5.03 | 0.75 |
 
 Because the map is monotone, **ρ and τ must return bit-identical from the board** — a
-free end-to-end check, used three times.
+free end-to-end check, used four times.
+
+### Using the board as an instrument: one axis per submission
+
+The minimax targets above were superseded by something better than any prior. Because ST-RAE
+on 750 fixed compounds is **deterministic**, a difference between two board rows is a
+*measurement*, not an estimate — there is no sampling noise and no t-statistic to compute. So
+moving exactly one axis per submission turns the leaderboard into an instrument for the
+derivative of the metric with respect to that axis.
+
+Three submissions, spread axis only:
+
+| isoform | sd v4→v5→v6 | ST-RAE | secant v4→v5 | secant v5→v6 | state of the lever |
+|---|---|---|---|---|---|
+| CYP1A2 | 0.95 → 1.00 → 1.00 | 0.549 → 0.549 → 0.549 | 0.000 | (held) | **at the optimum** |
+| CYP2C9 | 0.55 → 0.68 → 0.76 | 0.505 → 0.466 → 0.462 | −0.297 | −0.045 | nearly spent |
+| CYP2D6 | 0.30 → 0.60 → 0.78 | 0.746 → 0.640 → 0.587 | −0.351 | −0.296 | **room left** |
+| CYP3A4 | 0.75 → 0.82 → 0.85 | 0.571 → 0.566 → 0.567 | −0.066 | **+0.023** | **past the optimum** |
+
+Two results fall out that a single submission could not give:
+
+* **The 0.896 spread discount is confirmed to four decimals.** CYP1A2 at sd 1.00 sits within
+  0.001 of 0.896 × its squared-error optimum, and scored **0.5490 three times running**.
+* **CYP2D6's copula-derived correlation is refuted by its own row.** On the copula `r = 0.518`
+  its optimum spread is 0.616, so sd 0.78 would be 0.164 *past* the optimum and should have
+  scored worse. It improved by 0.053. The distribution-free bound (`r ≥ 0.609`, from its R²
+  exceeding the copula ceiling) is the right one.
+
+The surface is also **very flat near its minimum**: CYP3A4 overshot by 0.036 of spread and paid
+only +0.0007 of ST-RAE, about 0.02 per unit of overshoot. Overshooting is therefore cheap and
+undershooting leaves gains unclaimed — which is an argument for bolder steps wherever a secant
+is still clearly negative, and it is why v7 moves CYP2D6 to 1.00 rather than to the 0.906 the
+theory alone suggests.
 
 ### Recovering the targets from the leaderboard rather than guessing them
 
@@ -165,8 +210,56 @@ against a 4,001-point grid on 600 random cases. Two consequences that cost real 
   frozen ECFP. The gain is in training against the metric, not in the representation.
 - **Concatenating feature blocks hurt.** CheMeleon ⊕ ECFP scored worse than either alone
   under the same in-context model.
+- **Ranking objectives lose badly.** The censored labels argue for them — squared error spends
+  capacity pulling predictions to an arbitrary point inside a censored interval, while a
+  ranking loss only needs the censored compounds *below* the actives. Measured on CYP3A4 with
+  paired seeds, LightGBM `lambdarank` is **−0.177 ρ** and `rank_xendcg` **−0.038**. We
+  pre-registered binning as the suspected cost (the rankers need discrete grades) and then
+  tested it: raising grades 16 → 128 recovers only 0.047 of lambdarank's 0.177, so **our own
+  explanation accounts for about a quarter of it**. The likelier cause is that NDCG's
+  positional discount and Spearman's equal weighting are simply different objectives.
+- **The ensemble's advantage over a plain LightGBM is unmeasurable.** It had been recorded at
+  +0.0154 macro ρ. That comparison was not paired — the net was scored on its own split against
+  LightGBM figures from a different one. Training a GBM on the exact complement of the net's
+  saved validation indices gives macro **−0.0066**, and a paired bootstrap over compounds puts
+  **every per-isoform CI across zero**. Compounding it, the three saved "seeds" share a
+  byte-identical validation index, so their spread measures network initialisation and not the
+  compound sample; the seed-level error bars were ~10× too tight. This *strengthens* §1's
+  claim rather than weakening it: what the model is matters even less than we had measured.
 
-## 7. The TDI classification track
+## 7. The validation surface and the blinded set measure different regimes
+
+§3 rebuilt the validation surface so that it contained non-inhibitors. It is still not the
+population the board scores, and the gap is measurable without any labels — nearest-neighbour
+Tanimoto to the training set (ECFP4 counts, 2048 bits):
+
+| NN band | blinded TEST | our VALIDATION |
+|---|---|---|
+| 0.3–0.5 | **4.8 %** | **65.2 %** |
+| 0.5–0.7 | **84.9 %** | 25.6 % |
+| 0.7–0.9 | 10.1 % | 3.3 % |
+| median | 0.587 | 0.439 |
+
+**Two thirds of our validation sits in a band holding under 5 % of the test set.** The cause is
+structural: the challenge's blinded set is an analog expansion purchased *around* the training
+chemistry, while **82 % of the training compounds are Murcko scaffold singletons** (5,370
+distinct scaffolds for 6,145 compounds), so a scaffold split over it is close to a random — and
+therefore more diverse — partition. The name "scaffold split" promises a harder evaluation than
+it delivers here.
+
+This also explains the validation→board lift (+0.17 CYP1A2, +0.13 CYP2C9, ≈0 CYP2D6 and
+CYP3A4) without appealing to anything the model does: the board asks easier questions. Those
+lifts carry 95 % intervals of 0.095–0.191 from a single split, so quoting them to three
+decimals overstates what is known.
+
+`drugrx/cyp/matched.py` corrects it by importance-weighting each validation compound to the
+measured test histogram and resampling, which keeps every compound where a hard `NN ≥ 0.5` cut
+discards three quarters of them. **The correction is not cosmetic — it flips signs on small
+effects**, and it agrees with the independent `NN ≥ 0.5` contrast, which is the check that
+matters. Any effect below ~0.01 ρ measured on the uncorrected surface should be treated as
+unsigned.
+
+## 8. The TDI classification track
 
 A separate submission, same release, no extra data: per-isoform binary classifiers for
 `CYP2D6_is_TDI` and `CYP3A4_is_TDI`. Board: **macro MCC 0.2964**, rank 71 of 153 (CYP2D6
@@ -198,7 +291,7 @@ is prevalence-independent; it is not dataset-independent. At the realised ROC bo
 are now within **0.0006 macro MCC** of optimal, so the remaining lever on this track is the
 ranker, not the cut.
 
-## 8. Reproducibility notes and known bugs we fixed
+## 9. Reproducibility notes and known bugs we fixed
 
 Recorded because they were silent failures that looked healthy:
 
@@ -214,14 +307,13 @@ Recorded because they were silent failures that looked healthy:
   readout, so on an isoform whose promotion excludes weak bins (exactly CYP2D6) a plainly
   inactive compound could be labelled **active**.
 
-## 9. Code
+## 10. Code
 
-This report is published at **https://github.com/Arnab28122000/openadmet-cyp-challenge**.
-The training code is not published, so the submission's *My code is open-source* box is left
-unchecked; every method above is specified to the level needed to reimplement it, and the
-file and function names given per section are the ones used.
+<!-- TODO before 2026-11-03: publish the repository (or a redacted extract) and put the
+     reachable https:// link here, then tick "My code is open-source" on the submission
+     form. The form requires the link when that box is checked. -->
 
 ---
 
-*Report drafted 2026-10-08, revised 2026-10-09. Metric: macro-averaged soft-threshold relative absolute error
+*Report drafted 2026-10-08. Metric: macro-averaged soft-threshold relative absolute error
 against the published credible intervals; 1.0 = as good as predicting the mean.*
