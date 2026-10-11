@@ -1,0 +1,22 @@
+{
+  "CYP1A2": {
+    "rows": 12579,
+    "unique": 12546,
+    "test_collisions_dropped": 1
+  },
+  "CYP2C9": {
+    "rows": 12092,
+    "unique": 12045,
+    "test_collisions_dropped": 1
+  },
+  "CYP2D6": {
+    "rows": 13130,
+    "unique": 13084,
+    "test_collisions_dropped": 0
+  },
+  "CYP3A4": {
+    "rows": 12328,
+    "unique": 12290,
+    "test_collisions_dropped": 1
+  }
+}

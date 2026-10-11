@@ -1,0 +1,212 @@
+[
+  {
+    "endpoint": "ames",
+    "test": 1443,
+    "train": 4583,
+    "raw_frac_above_0.4": 0.345,
+    "mean_to_train": 0.3556,
+    "mean_to_background": 0.275,
+    "shift": 0.0806,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "bbb",
+    "test": 394,
+    "train": 984,
+    "raw_frac_above_0.4": 0.3425,
+    "mean_to_train": 0.3696,
+    "mean_to_background": 0.2652,
+    "shift": 0.1044,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "bioavailability",
+    "test": 128,
+    "train": 146,
+    "raw_frac_above_0.4": 0.2192,
+    "mean_to_train": 0.2945,
+    "mean_to_background": 0.2298,
+    "shift": 0.0647,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "caco2",
+    "test": 178,
+    "train": 503,
+    "raw_frac_above_0.4": 0.2724,
+    "mean_to_train": 0.3367,
+    "mean_to_background": 0.211,
+    "shift": 0.1257,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "cl_micro",
+    "test": 221,
+    "train": 481,
+    "raw_frac_above_0.4": 0.4241,
+    "mean_to_train": 0.4098,
+    "mean_to_background": 0.2338,
+    "shift": 0.176,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "cyp2c9_inhib",
+    "test": 2411,
+    "train": 4786,
+    "raw_frac_above_0.4": 0.3241,
+    "mean_to_train": 0.3816,
+    "mean_to_background": 0.2967,
+    "shift": 0.0848,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "cyp2c9_sub",
+    "test": 135,
+    "train": 157,
+    "raw_frac_above_0.4": 0.1592,
+    "mean_to_train": 0.2876,
+    "mean_to_background": 0.2375,
+    "shift": 0.0502,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "cyp2d6_inhib",
+    "test": 2621,
+    "train": 5412,
+    "raw_frac_above_0.4": 0.311,
+    "mean_to_train": 0.3734,
+    "mean_to_background": 0.3022,
+    "shift": 0.0712,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "cyp2d6_sub",
+    "test": 134,
+    "train": 157,
+    "raw_frac_above_0.4": 0.1847,
+    "mean_to_train": 0.2971,
+    "mean_to_background": 0.2312,
+    "shift": 0.0659,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "cyp3a4_inhib",
+    "test": 2462,
+    "train": 4823,
+    "raw_frac_above_0.4": 0.2955,
+    "mean_to_train": 0.3746,
+    "mean_to_background": 0.2845,
+    "shift": 0.0901,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "cyp3a4_sub",
+    "test": 134,
+    "train": 158,
+    "raw_frac_above_0.4": 0.2152,
+    "mean_to_train": 0.3012,
+    "mean_to_background": 0.2192,
+    "shift": 0.0819,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "dili",
+    "test": 96,
+    "train": 152,
+    "raw_frac_above_0.4": 0.0855,
+    "mean_to_train": 0.2464,
+    "mean_to_background": 0.2199,
+    "shift": 0.0265,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "half_life",
+    "test": 134,
+    "train": 201,
+    "raw_frac_above_0.4": 0.1841,
+    "mean_to_train": 0.2931,
+    "mean_to_background": 0.2266,
+    "shift": 0.0665,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "herg",
+    "test": 123,
+    "train": 286,
+    "raw_frac_above_0.4": 0.3147,
+    "mean_to_train": 0.35,
+    "mean_to_background": 0.2141,
+    "shift": 0.1358,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "hia",
+    "test": 117,
+    "train": 247,
+    "raw_frac_above_0.4": 0.1093,
+    "mean_to_train": 0.2658,
+    "mean_to_background": 0.2265,
+    "shift": 0.0393,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "ld50",
+    "test": 1466,
+    "train": 4674,
+    "raw_frac_above_0.4": 0.1564,
+    "mean_to_train": 0.3069,
+    "mean_to_background": 0.2874,
+    "shift": 0.0195,
+    "verdict": "baseline density"
+  },
+  {
+    "endpoint": "lipophilicity",
+    "test": 420,
+    "train": 2656,
+    "raw_frac_above_0.4": 0.4232,
+    "mean_to_train": 0.4146,
+    "mean_to_background": 0.2524,
+    "shift": 0.1622,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "pgp",
+    "test": 245,
+    "train": 682,
+    "raw_frac_above_0.4": 0.4575,
+    "mean_to_train": 0.4241,
+    "mean_to_background": 0.2441,
+    "shift": 0.1801,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "ppbr",
+    "test": 324,
+    "train": 781,
+    "raw_frac_above_0.4": 0.3982,
+    "mean_to_train": 0.3975,
+    "mean_to_background": 0.2354,
+    "shift": 0.1621,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "solubility",
+    "test": 1954,
+    "train": 5907,
+    "raw_frac_above_0.4": 0.2272,
+    "mean_to_train": 0.3169,
+    "mean_to_background": 0.2871,
+    "shift": 0.0298,
+    "verdict": "real proximity"
+  },
+  {
+    "endpoint": "vdss",
+    "test": 221,
+    "train": 496,
+    "raw_frac_above_0.4": 0.1673,
+    "mean_to_train": 0.2935,
+    "mean_to_background": 0.2478,
+    "shift": 0.0457,
+    "verdict": "real proximity"
+  }
+]

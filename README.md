@@ -8,12 +8,36 @@ TDI (classification) tracks
 UTC or the entry is excluded from the final leaderboard regardless of score.
 
 **ATTACHED** to the TDI submission of 2026-10-08 21:44 UTC and to the regression submissions
-of 2026-10-09 04:03 and 17:09 UTC (the Live board renders the link on our row). "My code is
-open-source" is left unchecked, because the report alone is not code.
+of 2026-10-09 04:03 and 17:09 UTC (the Live board renders the link on our row).
 
-**Last updated 2026-10-09**, after the third placement submission. Two numbers previously
-stated here have been **withdrawn** on re-measurement and are described as such in §6 rather
-than quietly removed.
+**Last updated 2026-10-11, after the sixth placement submission (v9).** This repository now also
+contains **the code and the full lab notebook** (see §11), so "My code is open-source" can be
+checked on future submissions — it was previously left unchecked because the report alone is not
+code.
+
+**Numbers previously stated here that have since been withdrawn on re-measurement are described
+as such rather than quietly removed** — in §6, and now in §12. There are more than a dozen.
+
+---
+
+## 0. Current standing (v9, scored 2026-10-11)
+
+| | ST-RAE | rank |
+|---|---|---|
+| **Overall (macro)** | **0.5232** | **59 / 273** |
+| CYP1A2 | 0.5369 | 57 |
+| CYP2C9 | 0.4555 | 92 |
+| CYP2D6 | 0.5493 | **25** |
+| CYP3A4 | 0.5513 | 137 |
+
+macro Spearman ρ **0.7093** · Kendall τ **0.5285** · MAE 0.6703 · R² 0.5611
+
+**v9 is the best row this entry has produced, and the rank still fell** (54 → 59) because
+`n_entrants` went 271 → 273 and other entrants improved more over the same window. That is the
+clearest available evidence that the placement axis is exhausted — see §4.
+
+ρ and τ have now returned **0.7093 / 0.5285 unchanged across seven consecutive submissions**,
+which remains the end-to-end check that every placement map really is monotone.
 
 ---
 
@@ -317,3 +341,71 @@ Recorded because they were silent failures that looked healthy:
 
 *Report drafted 2026-10-08. Metric: macro-averaged soft-threshold relative absolute error
 against the published credible intervals; 1.0 = as good as predicting the mean.*
+
+
+---
+
+## 11. Code and lab notebook (added 2026-10-11)
+
+This repository previously held only this report. It now also holds the implementation and the
+complete research record.
+
+| path | what |
+|---|---|
+| `talindrew-drugrx/` | features, training, the metric, the submission builder. 225 tests |
+| `docs/research-lab/` | the ELN: 14 numbered findings, a dated notebook, a changelog |
+| `docs/drugrx-training/` | the programme that built it, and the full leaderboard history |
+
+Start with `docs/research-lab/NOTEBOOK.md` (newest entry last) and `docs/research-lab/findings/`.
+
+### What v9 added to the method: the metric is convex, so the minimum can be *bracketed*
+
+ST-RAE is a sum of hinge terms, so for a pure affine map it is **convex and piecewise LINEAR** in
+both the centre and the spread. Its derivative `(N_above − N_below)/D` is a non-decreasing step
+function. Three consequences were used directly:
+
+1. **A secant that changes sign across a point brackets the minimum.** v8 deliberately overshot
+   and produced a sign change on **all four axes** at once, which converted every subsequent
+   forecast from an extrapolation into an interpolation.
+2. **The chord between two measured points straddling the target is a rigorous upper bound**,
+   from convexity alone — no assumption about the function's shape.
+3. v9 therefore targeted the 3-point parabola vertex on each axis and pre-registered a chord bound
+   per cell. **Every cell landed inside its band**, and the macro point estimate was **0.5236
+   against an actual 0.5232 — off by 0.0004.**
+
+The remaining headroom on the affine family, bounded by the chord/slope bracket, is **under 0.003
+macro**. No further submission is worth a slot on placement grounds alone.
+
+---
+
+## 12. Further withdrawals and corrections (2026-10-11)
+
+Recorded here because §6 set the precedent and the list has grown. Each was found either by
+re-measurement, by adversarial verification, or by reading a primary source properly.
+
+- **"The screen pseudo-label is a left-censoring bound."** Withdrawn. It is the **median** of 303
+  compounds carrying both a dose-response curve and a no-inhibition readout, and roughly half of
+  them truly sit **above** it. This is **coarsening, not censoring**, and every left-censored
+  estimator is mis-specified for half the rows it touches. A Tobit EM arm failed both its
+  pre-registered bars, and the only reason it was merely uninformative rather than harmful is a
+  **second** defect: its σ was an in-sample residual from an overfit learner, 5–7× too small.
+  Fixing σ would have made it impute *below the measured minimum*.
+- **"P(y\* > 2.211) ≈ 0.5 is a finding."** Withdrawn as a *measurement* — it is a property of the
+  median, and sweeping the inactivity threshold from 0.70 to 1.00 moves it only 0.4973–0.5000. The
+  substantive point stands; the presentation was arithmetic dressed as evidence.
+- **"A per-row label fitted on the readout is worth having."** Measured at **+0.0023 macro ρ**
+  against a +0.005 bar, 144 production-learner fits, 6 seeds. And the fit's *direction* was an
+  artefact of using OLS — a conditional-**mean** estimator — to improve a **median**: four of five
+  defensible rules move the label **down**. What shipped instead is a two-branch floor split at the
+  existing bin edge r = 1.0 (2.2732 / 2.1320), the only rule that wins on **both** out-of-fold MSE
+  (−4.40%) **and** MAE (−1.44%) — which matters because this entry is 0.30 × squared error +
+  0.70 × an L1-like interval hinge.
+- **"Representation is the lever."** Four representation changes were measured at Δρ ≈ 0.0000 —
+  all four with the predictor held fixed. The **predictor** had never been varied. Tabular
+  foundation models on raw descriptors were then measured and missed the bar (0/3 seeds on the
+  primary endpoint); the matched-feature edge of TabICL turned out to be an artefact of its
+  100-column pretraining range, decaying monotonically to a loss by k = 1000.
+- **A live defect in this entry's own builder**, found and fixed: XGBoost's early stopping was
+  selected under MAE on a set that is **61.8–65.1% a single constant** on CYP2D6, and MAE against a
+  constant is minimised by *predicting* that constant. The share ordering across isoforms is
+  exactly the ordering of a σ̂ anomaly previously attributed to the training labels alone.

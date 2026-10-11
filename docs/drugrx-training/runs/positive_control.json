@@ -1,0 +1,46 @@
+{
+  "endpoint": "cl_micro",
+  "rows": [
+    {
+      "spike_fraction": 0.0,
+      "molecules_spiked": 0,
+      "detected_overlap": 0,
+      "frac_test_flagged": 0.0,
+      "nn_frac_above_0.9": 0.0,
+      "exact": true
+    },
+    {
+      "spike_fraction": 0.01,
+      "molecules_spiked": 2,
+      "detected_overlap": 2,
+      "frac_test_flagged": 0.00904977375565611,
+      "nn_frac_above_0.9": 0.0,
+      "exact": true
+    },
+    {
+      "spike_fraction": 0.05,
+      "molecules_spiked": 11,
+      "detected_overlap": 11,
+      "frac_test_flagged": 0.049773755656108594,
+      "nn_frac_above_0.9": 0.004524886877828055,
+      "exact": true
+    },
+    {
+      "spike_fraction": 0.1,
+      "molecules_spiked": 22,
+      "detected_overlap": 22,
+      "frac_test_flagged": 0.09954751131221719,
+      "nn_frac_above_0.9": 0.013574660633484163,
+      "exact": true
+    },
+    {
+      "spike_fraction": 0.25,
+      "molecules_spiked": 55,
+      "detected_overlap": 55,
+      "frac_test_flagged": 0.248868778280543,
+      "nn_frac_above_0.9": 0.027149321266968326,
+      "exact": true
+    }
+  ],
+  "verdict": "PASS"
+}

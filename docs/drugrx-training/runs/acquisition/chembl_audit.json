@@ -1,0 +1,102 @@
+{
+  "pulls": [
+    {
+      "pull": "lipophilicity",
+      "endpoint": "lipophilicity",
+      "gross_rows": 4200,
+      "unique_molecules": 4194,
+      "collides_own_test": 418,
+      "own_test_size": 420,
+      "frac_own_test_hit": 0.9952,
+      "collides_any_test": 996,
+      "already_held": 4191,
+      "residual_new_and_safe": 3
+    },
+    {
+      "pull": "ppbr",
+      "endpoint": "ppbr",
+      "gross_rows": 1614,
+      "unique_molecules": 1612,
+      "collides_own_test": 324,
+      "own_test_size": 324,
+      "frac_own_test_hit": 1.0,
+      "collides_any_test": 602,
+      "already_held": 1611,
+      "residual_new_and_safe": 1
+    },
+    {
+      "pull": "cl_micro",
+      "endpoint": "cl_micro",
+      "gross_rows": 1102,
+      "unique_molecules": 1102,
+      "collides_own_test": 221,
+      "own_test_size": 221,
+      "frac_own_test_hit": 1.0,
+      "collides_any_test": 426,
+      "already_held": 1102,
+      "residual_new_and_safe": 0
+    },
+    {
+      "pull": "herg",
+      "endpoint": "herg",
+      "gross_rows": 19130,
+      "unique_molecules": 15934,
+      "collides_own_test": 53,
+      "own_test_size": 123,
+      "frac_own_test_hit": 0.4309,
+      "collides_any_test": 642,
+      "already_held": 1528,
+      "residual_new_and_safe": 14406
+    },
+    {
+      "pull": "half_life",
+      "endpoint": "half_life",
+      "gross_rows": 20000,
+      "unique_molecules": 12654,
+      "collides_own_test": 30,
+      "own_test_size": 134,
+      "frac_own_test_hit": 0.2239,
+      "collides_any_test": 258,
+      "already_held": 724,
+      "residual_new_and_safe": 11930
+    },
+    {
+      "pull": "caco2",
+      "endpoint": "caco2",
+      "gross_rows": 20000,
+      "unique_molecules": 13959,
+      "collides_own_test": 36,
+      "own_test_size": 178,
+      "frac_own_test_hit": 0.2022,
+      "collides_any_test": 241,
+      "already_held": 632,
+      "residual_new_and_safe": 13327
+    },
+    {
+      "pull": "solubility",
+      "endpoint": "solubility",
+      "gross_rows": 20000,
+      "unique_molecules": 16146,
+      "collides_own_test": 108,
+      "own_test_size": 1954,
+      "frac_own_test_hit": 0.0553,
+      "collides_any_test": 463,
+      "already_held": 1413,
+      "residual_new_and_safe": 14733
+    },
+    {
+      "pull": "vdss",
+      "endpoint": "vdss",
+      "gross_rows": 16644,
+      "unique_molecules": 11249,
+      "collides_own_test": 71,
+      "own_test_size": 221,
+      "frac_own_test_hit": 0.3213,
+      "collides_any_test": 556,
+      "already_held": 1196,
+      "residual_new_and_safe": 10053
+    }
+  ],
+  "gross_unique": 76850,
+  "residual": 64453
+}

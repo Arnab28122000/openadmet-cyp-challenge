@@ -1,0 +1,10 @@
+# Anchored to the top level on purpose. A bare `data/` matches at *any* depth, so
+# it also ignored `drugrx/data/` -- the source package holding `splits.py`
+# (the scaffold split behind every headline number in this programme),
+# `standardise.py` (the InChIKey standardisation that caught 425 train/test
+# collisions), `tdc.py` (the 21-endpoint registry and its pinned mirror row
+# counts) and `multitask.py`. None of it was in version control, so no checkout
+# could reproduce a single reported result. Keep the leading slash.
+/data/
+.venv/
+__pycache__/

@@ -1,0 +1,575 @@
+{
+  "generated": "2026-10-04T17:33:34",
+  "arm": "binary-only",
+  "model": "ECFP4(2048,r=2) [binary-only] + LightGBM",
+  "note": "official_split is TDC's own scaffold split and is leaderboard-comparable; our_scaffold_splits is this repo's splitter and is an error-bar estimate only.",
+  "results": [
+    {
+      "task": "caco2",
+      "arm": "binary-only",
+      "repo": "TDC_caco2_wang",
+      "type": "regression",
+      "metric": "mae",
+      "n_rows": 910,
+      "meaning": "Rate across a gut-cell monolayer: a proxy for oral absorption.",
+      "official_split": {
+        "value": 0.4726664779356161,
+        "n_train": 637,
+        "n_valid": 91,
+        "n_test": 182,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 0.4117833581320078,
+        "std": 0.028865724671299598,
+        "n_seeds": 3,
+        "values": [
+          0.3830085480952442,
+          0.45124770119533514,
+          0.40109382510544395
+        ]
+      },
+      "seconds": 7.2
+    },
+    {
+      "task": "bioavailability",
+      "arm": "binary-only",
+      "repo": "TDC_bioavailability_ma",
+      "type": "binary",
+      "metric": "roc_auc",
+      "n_rows": 640,
+      "meaning": "Whether an oral dose reaches the bloodstream intact.",
+      "official_split": {
+        "value": 0.6245427336215497,
+        "n_train": 448,
+        "n_valid": 64,
+        "n_test": 128,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 0.6208032268308701,
+        "std": 0.029048166460086736,
+        "n_seeds": 3,
+        "values": [
+          0.6618357487922706,
+          0.5985714285714285,
+          0.6020025031289111
+        ]
+      },
+      "seconds": 3.6
+    },
+    {
+      "task": "lipophilicity",
+      "arm": "binary-only",
+      "repo": "MoleculeNet_Lipophilicity",
+      "type": "regression",
+      "metric": "mae",
+      "n_rows": 4200,
+      "meaning": "Octanol/water partition: drives membrane crossing and off-target stickiness.",
+      "official_split": {
+        "value": 0.6347587921472913,
+        "n_train": 3360,
+        "n_valid": 420,
+        "n_test": 420,
+        "test_scaffold_overlap": 0.0071
+      },
+      "our_scaffold_splits": {
+        "mean": 0.6847389863482599,
+        "std": 0.016389856947141422,
+        "n_seeds": 3,
+        "values": [
+          0.7078269428083915,
+          0.6714199543181807,
+          0.6749700619182077
+        ]
+      },
+      "seconds": 35.0
+    },
+    {
+      "task": "solubility",
+      "arm": "binary-only",
+      "repo": "TDC_solubility_aqsoldb",
+      "type": "regression",
+      "metric": "mae",
+      "n_rows": 9982,
+      "meaning": "Aqueous solubility; an insoluble compound cannot be dosed.",
+      "official_split": {
+        "value": 1.242012548889193,
+        "n_train": 6987,
+        "n_valid": 998,
+        "n_test": 1997,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 1.4007332358560995,
+        "std": 0.024128890770294217,
+        "n_seeds": 3,
+        "values": [
+          1.4019115211094986,
+          1.3706099809589525,
+          1.4296782054998476
+        ]
+      },
+      "seconds": 28.0
+    },
+    {
+      "task": "hia",
+      "arm": "binary-only",
+      "repo": "TDC_hia_hou",
+      "type": "binary",
+      "metric": "roc_auc",
+      "n_rows": 578,
+      "meaning": "Human intestinal absorption.",
+      "official_split": {
+        "value": 0.9069958847736626,
+        "n_train": 404,
+        "n_valid": 57,
+        "n_test": 117,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 0.9266112427877133,
+        "std": 0.03329706986004956,
+        "n_seeds": 3,
+        "values": [
+          0.9126984126984127,
+          0.9725274725274725,
+          0.8946078431372548
+        ]
+      },
+      "seconds": 4.2
+    },
+    {
+      "task": "pgp",
+      "arm": "binary-only",
+      "repo": "TDC_pgp_broccatelli",
+      "type": "binary",
+      "metric": "roc_auc",
+      "n_rows": 1218,
+      "meaning": "P-glycoprotein inhibition; affects absorption and drug-drug interactions.",
+      "official_split": {
+        "value": 0.917821914156225,
+        "n_train": 852,
+        "n_valid": 121,
+        "n_test": 245,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 0.8723581713320211,
+        "std": 0.022891775287394937,
+        "n_seeds": 3,
+        "values": [
+          0.8609164420485175,
+          0.9043062200956937,
+          0.8518518518518519
+        ]
+      },
+      "seconds": 13.2
+    },
+    {
+      "task": "bbb",
+      "arm": "binary-only",
+      "repo": "TDC_bbb_martins",
+      "type": "binary",
+      "metric": "roc_auc",
+      "n_rows": 2030,
+      "meaning": "Blood-brain barrier penetration \u2014 wanted for CNS targets, unwanted otherwise.",
+      "official_split": {
+        "value": 0.8044871794871795,
+        "n_train": 1421,
+        "n_valid": 203,
+        "n_test": 406,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 0.8584034537464668,
+        "std": 0.04164976464894072,
+        "n_seeds": 3,
+        "values": [
+          0.8002906976744186,
+          0.8791390728476821,
+          0.8957805907172997
+        ]
+      },
+      "seconds": 8.4
+    },
+    {
+      "task": "ppbr",
+      "arm": "binary-only",
+      "repo": "TDC_ppbr_az",
+      "type": "regression",
+      "metric": "mae",
+      "n_rows": 1614,
+      "meaning": "Plasma protein binding; only the unbound fraction acts.",
+      "official_split": {
+        "value": 9.80528463331671,
+        "n_train": 1129,
+        "n_valid": 161,
+        "n_test": 324,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 11.004457242103115,
+        "std": 0.32869344377618986,
+        "n_seeds": 3,
+        "values": [
+          11.215303387488863,
+          10.540262658272365,
+          11.25780568054812
+        ]
+      },
+      "seconds": 7.7
+    },
+    {
+      "task": "vdss",
+      "arm": "binary-only",
+      "repo": "TDC_vdss_lombardo",
+      "type": "regression",
+      "metric": "spearman",
+      "n_rows": 1130,
+      "meaning": "Volume of distribution: how far the compound spreads beyond blood.",
+      "official_split": {
+        "value": 0.5016854638254523,
+        "n_train": 791,
+        "n_valid": 113,
+        "n_test": 226,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 0.4984561576143705,
+        "std": 0.021862048695175287,
+        "n_seeds": 3,
+        "values": [
+          0.4806596189111868,
+          0.5292493160354436,
+          0.4854595378964812
+        ]
+      },
+      "seconds": 5.6
+    },
+    {
+      "task": "cyp2c9_inhib",
+      "arm": "binary-only",
+      "repo": "TDC_cyp2c9_veith",
+      "type": "binary",
+      "metric": "pr_auc",
+      "n_rows": 12092,
+      "meaning": "CYP2C9 inhibition \u2014 a drug-drug interaction risk.",
+      "official_split": {
+        "value": 0.7495390241427609,
+        "n_train": 8464,
+        "n_valid": 1209,
+        "n_test": 2419,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 0.7324542632623349,
+        "std": 0.005876509199079391,
+        "n_seeds": 3,
+        "values": [
+          0.7249121761724893,
+          0.7392481750308468,
+          0.7332024385836687
+        ]
+      },
+      "seconds": 22.9
+    },
+    {
+      "task": "cyp2d6_inhib",
+      "arm": "binary-only",
+      "repo": "TDC_cyp2d6_veith",
+      "type": "binary",
+      "metric": "pr_auc",
+      "n_rows": 13130,
+      "meaning": "CYP2D6 inhibition \u2014 a drug-drug interaction risk.",
+      "official_split": {
+        "value": 0.6412360210082989,
+        "n_train": 9191,
+        "n_valid": 1313,
+        "n_test": 2626,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 0.6399607417750015,
+        "std": 0.009617848363426112,
+        "n_seeds": 3,
+        "values": [
+          0.6450444490574335,
+          0.6264931638597294,
+          0.6483446124078416
+        ]
+      },
+      "seconds": 25.7
+    },
+    {
+      "task": "cyp3a4_inhib",
+      "arm": "binary-only",
+      "repo": "TDC_cyp3a4_veith",
+      "type": "binary",
+      "metric": "pr_auc",
+      "n_rows": 12328,
+      "meaning": "CYP3A4 inhibition \u2014 the most common interaction liability.",
+      "official_split": {
+        "value": 0.8544146069109775,
+        "n_train": 8629,
+        "n_valid": 1232,
+        "n_test": 2467,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 0.813249860261208,
+        "std": 0.022713637147458356,
+        "n_seeds": 3,
+        "values": [
+          0.8301790355800127,
+          0.7811438632536201,
+          0.8284266819499915
+        ]
+      },
+      "seconds": 23.5
+    },
+    {
+      "task": "cyp2c9_sub",
+      "arm": "binary-only",
+      "repo": "TDC_cyp2c9_substrate_carbonmangels",
+      "type": "binary",
+      "metric": "pr_auc",
+      "n_rows": 669,
+      "meaning": "Whether CYP2C9 metabolises it.",
+      "official_split": {
+        "value": 0.3415223698185802,
+        "n_train": 468,
+        "n_valid": 66,
+        "n_test": 135,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 0.24128961418509068,
+        "std": 0.07097217033329929,
+        "n_seeds": 3,
+        "values": [
+          0.1897117459423961,
+          0.3416464105084798,
+          0.19251068610439614
+        ]
+      },
+      "seconds": 3.9
+    },
+    {
+      "task": "cyp2d6_sub",
+      "arm": "binary-only",
+      "repo": "TDC_cyp2d6_substrate_carbonmangels",
+      "type": "binary",
+      "metric": "pr_auc",
+      "n_rows": 667,
+      "meaning": "Whether CYP2D6 metabolises it.",
+      "official_split": {
+        "value": 0.6067988935187194,
+        "n_train": 466,
+        "n_valid": 66,
+        "n_test": 135,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 0.5539420548425512,
+        "std": 0.08761762358256522,
+        "n_seeds": 3,
+        "values": [
+          0.6522321941244223,
+          0.5701388426388426,
+          0.4394551277643885
+        ]
+      },
+      "seconds": 4.2
+    },
+    {
+      "task": "cyp3a4_sub",
+      "arm": "binary-only",
+      "repo": "TDC_cyp3a4_substrate_carbonmangels",
+      "type": "binary",
+      "metric": "roc_auc",
+      "n_rows": 670,
+      "meaning": "Whether CYP3A4 metabolises it.",
+      "official_split": {
+        "value": 0.6361889692585896,
+        "n_train": 468,
+        "n_valid": 67,
+        "n_test": 135,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 0.6387579143746127,
+        "std": 0.02798477545826287,
+        "n_seeds": 3,
+        "values": [
+          0.6096256684491979,
+          0.6765232974910395,
+          0.6301247771836007
+        ]
+      },
+      "seconds": 5.6
+    },
+    {
+      "task": "half_life",
+      "arm": "binary-only",
+      "repo": "TDC_half_life_obach",
+      "type": "regression",
+      "metric": "spearman",
+      "n_rows": 667,
+      "meaning": "How long it survives in the body; sets the dosing interval.",
+      "official_split": {
+        "value": 0.2809039206287389,
+        "n_train": 466,
+        "n_valid": 66,
+        "n_test": 135,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 0.16853413926427155,
+        "std": 0.041466436014314816,
+        "n_seeds": 3,
+        "values": [
+          0.10997213124072272,
+          0.200473410715799,
+          0.19515687583629288
+        ]
+      },
+      "seconds": 10.8
+    },
+    {
+      "task": "cl_micro",
+      "arm": "binary-only",
+      "repo": "TDC_clearance_microsome_az",
+      "type": "regression",
+      "metric": "spearman",
+      "n_rows": 1102,
+      "meaning": "Microsomal clearance \u2014 how fast the liver removes it.",
+      "official_split": {
+        "value": 0.5462147270336701,
+        "n_train": 771,
+        "n_valid": 110,
+        "n_test": 221,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 0.3942920641626757,
+        "std": 0.010023382891203362,
+        "n_seeds": 3,
+        "values": [
+          0.38085858905127107,
+          0.39708979461211275,
+          0.4049278088246432
+        ]
+      },
+      "seconds": 6.0
+    },
+    {
+      "task": "ld50",
+      "arm": "binary-only",
+      "repo": "TDC_ld50_zhu",
+      "type": "regression",
+      "metric": "mae",
+      "n_rows": 7385,
+      "meaning": "Acute toxicity in rodents.",
+      "official_split": {
+        "value": 0.6822286981120091,
+        "n_train": 5169,
+        "n_valid": 738,
+        "n_test": 1478,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 0.5707440409460546,
+        "std": 0.010826367359796512,
+        "n_seeds": 3,
+        "values": [
+          0.5614678078528823,
+          0.5859310422685188,
+          0.5648332727167625
+        ]
+      },
+      "seconds": 10.1
+    },
+    {
+      "task": "herg",
+      "arm": "binary-only",
+      "repo": "TDC_herg",
+      "type": "binary",
+      "metric": "roc_auc",
+      "n_rows": 655,
+      "meaning": "hERG channel blockade \u2014 the cardiac-arrhythmia liability that kills programmes.",
+      "official_split": {
+        "value": 0.7824742268041237,
+        "n_train": 458,
+        "n_valid": 65,
+        "n_test": 132,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 0.841881592185607,
+        "std": 0.04991625074606809,
+        "n_seeds": 3,
+        "values": [
+          0.8890959925442685,
+          0.8637226970560304,
+          0.7728260869565218
+        ]
+      },
+      "seconds": 4.2
+    },
+    {
+      "task": "ames",
+      "arm": "binary-only",
+      "repo": "TDC_ames",
+      "type": "binary",
+      "metric": "roc_auc",
+      "n_rows": 7278,
+      "meaning": "Mutagenicity in the Ames test.",
+      "official_split": {
+        "value": 0.8184074487458145,
+        "n_train": 5094,
+        "n_valid": 727,
+        "n_test": 1457,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 0.773715914061829,
+        "std": 0.009281653293844103,
+        "n_seeds": 3,
+        "values": [
+          0.7868195644607213,
+          0.7664974619289339,
+          0.7678307157958322
+        ]
+      },
+      "seconds": 11.2
+    },
+    {
+      "task": "dili",
+      "arm": "binary-only",
+      "repo": "TDC_dili",
+      "type": "binary",
+      "metric": "roc_auc",
+      "n_rows": 475,
+      "meaning": "Drug-induced liver injury.",
+      "official_split": {
+        "value": 0.8760869565217392,
+        "n_train": 332,
+        "n_valid": 47,
+        "n_test": 96,
+        "test_scaffold_overlap": 0.0
+      },
+      "our_scaffold_splits": {
+        "mean": 0.8357142857142857,
+        "std": 0.0771510702232379,
+        "n_seeds": 3,
+        "values": [
+          0.937037037037037,
+          0.75,
+          0.8201058201058201
+        ]
+      },
+      "seconds": 3.9
+    }
+  ]
+}

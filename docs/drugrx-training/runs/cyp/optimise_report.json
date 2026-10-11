@@ -1,0 +1,29 @@
+{
+  "blend_weight_xgb": 0.45,
+  "blend_macro": 0.4184633576404982,
+  "xgb_alone": 0.44319446033317667,
+  "final": 0.4152409181726694,
+  "per_endpoint": {
+    "CYP1A2_pIC50_direct_inhibition": 0.476025331321364,
+    "CYP2C9_pIC50_direct_inhibition": 0.32868137122015073,
+    "CYP2D6_pIC50_direct_inhibition": 0.6012527195790323,
+    "CYP3A4_pIC50_direct_inhibition": 0.2550042505701306
+  },
+  "offsets": {
+    "CYP1A2_pIC50_direct_inhibition": 0.04000000000000137,
+    "CYP2C9_pIC50_direct_inhibition": 0.0800000000000014,
+    "CYP2D6_pIC50_direct_inhibition": -0.019999999999998685,
+    "CYP3A4_pIC50_direct_inhibition": 0.02000000000000135
+  },
+  "improvement_mean": 0.02829736847429416,
+  "improvement_ci": [
+    0.01595149826728823,
+    0.04271805975941192
+  ],
+  "pred_std": {
+    "CYP1A2_pIC50_direct_inhibition": 0.5510334968566895,
+    "CYP2C9_pIC50_direct_inhibition": 0.597915530204773,
+    "CYP2D6_pIC50_direct_inhibition": 0.40543657541275024,
+    "CYP3A4_pIC50_direct_inhibition": 0.7710061073303223
+  }
+}

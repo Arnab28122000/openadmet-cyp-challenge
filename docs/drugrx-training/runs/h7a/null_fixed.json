@@ -1,0 +1,237 @@
+{
+  "rows": [
+    {
+      "endpoint": "caco2",
+      "metric": "mae",
+      "real": 0.3502813319726837,
+      "real_sd": 0.0205633084071888,
+      "null_mean": 0.35530396729628605,
+      "null_sd": 0.026635628199261588,
+      "percentile": 0.5833333333333334,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "bioavailability",
+      "metric": "roc_auc",
+      "real": 0.5748392639396963,
+      "real_sd": 0.042350931319475135,
+      "null_mean": 0.5434125928389314,
+      "null_sd": 0.054991964601264126,
+      "percentile": 0.7083333333333334,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "lipophilicity",
+      "metric": "mae",
+      "real": 0.5615603912898472,
+      "real_sd": 0.01387609230320777,
+      "null_mean": 0.5867818613743025,
+      "null_sd": 0.012587710198983231,
+      "percentile": 0.9583333333333334,
+      "verdict": "above null",
+      "draws": 24
+    },
+    {
+      "endpoint": "solubility",
+      "metric": "mae",
+      "real": 0.906763736066775,
+      "real_sd": 0.014165167644883108,
+      "null_mean": 0.9164442450723947,
+      "null_sd": 0.014151711310918458,
+      "percentile": 0.8333333333333334,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "hia",
+      "metric": "roc_auc",
+      "real": 0.943741426611797,
+      "real_sd": 0.01944978884706611,
+      "null_mean": 0.9265603566529492,
+      "null_sd": 0.021363858148715286,
+      "percentile": 0.7916666666666666,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "pgp",
+      "metric": "roc_auc",
+      "real": 0.9103683462187862,
+      "real_sd": 0.008096667202127632,
+      "null_mean": 0.9028036967919665,
+      "null_sd": 0.012682446600248044,
+      "percentile": 0.7083333333333334,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "bbb",
+      "metric": "roc_auc",
+      "real": 0.8716012241838774,
+      "real_sd": 0.013379728528974103,
+      "null_mean": 0.8600360176548968,
+      "null_sd": 0.010646348916173214,
+      "percentile": 0.8333333333333334,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "ppbr",
+      "metric": "mae",
+      "real": 8.919132200091953,
+      "real_sd": 0.2941470713560323,
+      "null_mean": 9.104527102792213,
+      "null_sd": 0.27839185940564815,
+      "percentile": 0.6666666666666666,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "vdss",
+      "metric": "spearman",
+      "real": 0.2326567306185975,
+      "real_sd": 0.06782040531752173,
+      "null_mean": 0.22578564764033912,
+      "null_sd": 0.07962063970333079,
+      "percentile": 0.5416666666666666,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "cyp2c9_inhib",
+      "metric": "pr_auc",
+      "real": 0.7120841973872777,
+      "real_sd": 0.011488598435417014,
+      "null_mean": 0.7035825897437586,
+      "null_sd": 0.011314617547159553,
+      "percentile": 0.75,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "cyp2d6_inhib",
+      "metric": "pr_auc",
+      "real": 0.609022315343131,
+      "real_sd": 0.0124983124256136,
+      "null_mean": 0.5855246432944484,
+      "null_sd": 0.013406608503640338,
+      "percentile": 0.9166666666666666,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "cyp3a4_inhib",
+      "metric": "pr_auc",
+      "real": 0.8105361626189659,
+      "real_sd": 0.008543856439742788,
+      "null_mean": 0.8004475792325442,
+      "null_sd": 0.00929125612422516,
+      "percentile": 0.875,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "cyp2c9_sub",
+      "metric": "pr_auc",
+      "real": 0.32120262926976056,
+      "real_sd": 0.037549433627553384,
+      "null_mean": 0.33788719424231495,
+      "null_sd": 0.04145802598278828,
+      "percentile": 0.2916666666666667,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "cyp2d6_sub",
+      "metric": "pr_auc",
+      "real": 0.5846099065901872,
+      "real_sd": 0.06499034400437219,
+      "null_mean": 0.5595910290717674,
+      "null_sd": 0.0688270859898327,
+      "percentile": 0.625,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "cyp3a4_sub",
+      "metric": "roc_auc",
+      "real": 0.5535809676434676,
+      "real_sd": 0.03934147268284261,
+      "null_mean": 0.5527701465201466,
+      "null_sd": 0.040612417442649644,
+      "percentile": 0.5416666666666666,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "half_life",
+      "metric": "spearman",
+      "real": 0.2418326383527616,
+      "real_sd": 0.0732935056264375,
+      "null_mean": 0.20715327414453114,
+      "null_sd": 0.05706314553879578,
+      "percentile": 0.75,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "cl_micro",
+      "metric": "spearman",
+      "real": 0.5121123323547789,
+      "real_sd": 0.0489512207229903,
+      "null_mean": 0.49729255343165374,
+      "null_sd": 0.039012353732816994,
+      "percentile": 0.6666666666666666,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "ld50",
+      "metric": "mae",
+      "real": 0.645752197599102,
+      "real_sd": 0.013410589387358555,
+      "null_mean": 0.6516193598679056,
+      "null_sd": 0.01426583522899578,
+      "percentile": 0.75,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "herg",
+      "metric": "roc_auc",
+      "real": 0.7707264173998046,
+      "real_sd": 0.044113079895620064,
+      "null_mean": 0.7658693792766375,
+      "null_sd": 0.04605651643130232,
+      "percentile": 0.625,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "ames",
+      "metric": "roc_auc",
+      "real": 0.813357857827859,
+      "real_sd": 0.00811709400072796,
+      "null_mean": 0.8107803301233384,
+      "null_sd": 0.00818548804830783,
+      "percentile": 0.6666666666666666,
+      "verdict": "inside null",
+      "draws": 24
+    },
+    {
+      "endpoint": "dili",
+      "metric": "roc_auc",
+      "real": 0.7281884057971014,
+      "real_sd": 0.045682299698855997,
+      "null_mean": 0.714782608695652,
+      "null_sd": 0.053370192445914275,
+      "percentile": 0.5833333333333334,
+      "verdict": "inside null",
+      "draws": 24
+    }
+  ],
+  "above_null": 1,
+  "draws": 24
+}

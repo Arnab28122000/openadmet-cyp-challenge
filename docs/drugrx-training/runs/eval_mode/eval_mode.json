@@ -1,0 +1,242 @@
+{
+  "generated": "2026-10-04T19:26:31",
+  "artifact": "/content/artifact/ensemble.pt",
+  "repeats": 5,
+  "endpoints": 21,
+  "endpoints_improved_by_eval_mode": 18,
+  "mean_gain": 0.0024438444505743865,
+  "median_spread_inflation": 1.27350462426247,
+  "rows": [
+    {
+      "task": "caco2",
+      "metric": "mae",
+      "eval_mode": 0.3206610182601757,
+      "dropout_on_mean": 0.30492389136962206,
+      "dropout_on_std": 0.0020414796431987513,
+      "gain": -0.01573712689055362,
+      "spread_eval": 0.20893144607543945,
+      "spread_dropout_on": 0.26941341161727905,
+      "spread_inflation": 1.2894823478127904
+    },
+    {
+      "task": "bioavailability",
+      "metric": "roc_auc",
+      "eval_mode": 0.6049218490189557,
+      "dropout_on_mean": 0.5991353508480213,
+      "dropout_on_std": 0.013455387749382342,
+      "gain": 0.005786498170934462,
+      "spread_eval": 0.2048153281211853,
+      "spread_dropout_on": 0.24568717181682587,
+      "spread_inflation": 1.1995546137614148
+    },
+    {
+      "task": "lipophilicity",
+      "metric": "mae",
+      "eval_mode": 0.5010090017205193,
+      "dropout_on_mean": 0.509910053789048,
+      "dropout_on_std": 0.0013343372733132979,
+      "gain": 0.008901052068528648,
+      "spread_eval": 0.21547643840312958,
+      "spread_dropout_on": 0.2790495753288269,
+      "spread_inflation": 1.2950352131157834
+    },
+    {
+      "task": "solubility",
+      "metric": "mae",
+      "eval_mode": 0.8260671717635952,
+      "dropout_on_mean": 0.8308254845761077,
+      "dropout_on_std": 0.0018658849303630875,
+      "gain": 0.0047583128125124885,
+      "spread_eval": 0.16143374145030975,
+      "spread_dropout_on": 0.22095422446727753,
+      "spread_inflation": 1.3686991485314024
+    },
+    {
+      "task": "hia",
+      "metric": "roc_auc",
+      "eval_mode": 0.9818930041152264,
+      "dropout_on_mean": 0.9807407407407409,
+      "dropout_on_std": 0.0043815083635246384,
+      "gain": 0.0011522633744854849,
+      "spread_eval": 0.16319364309310913,
+      "spread_dropout_on": 0.21426697075366974,
+      "spread_inflation": 1.3129615020079002
+    },
+    {
+      "task": "pgp",
+      "metric": "roc_auc",
+      "eval_mode": 0.9456811516928819,
+      "dropout_on_mean": 0.9453345774460145,
+      "dropout_on_std": 0.0014982813597785212,
+      "gain": 0.0003465742468674593,
+      "spread_eval": 0.14437717199325562,
+      "spread_dropout_on": 0.19524797797203064,
+      "spread_inflation": 1.352346602142556
+    },
+    {
+      "task": "bbb",
+      "metric": "roc_auc",
+      "eval_mode": 0.9295469686875416,
+      "dropout_on_mean": 0.9281645569620254,
+      "dropout_on_std": 0.0012953381573547757,
+      "gain": 0.0013824117255162305,
+      "spread_eval": 0.13125045597553253,
+      "spread_dropout_on": 0.18323202431201935,
+      "spread_inflation": 1.3960486685560707
+    },
+    {
+      "task": "ppbr",
+      "metric": "mae",
+      "eval_mode": 8.165443066255547,
+      "dropout_on_mean": 8.161951621915087,
+      "dropout_on_std": 0.02201442928174834,
+      "gain": -0.0034914443404598927,
+      "spread_eval": 0.23074060678482056,
+      "spread_dropout_on": 0.2916869819164276,
+      "spread_inflation": 1.2641337213282238
+    },
+    {
+      "task": "vdss",
+      "metric": "spearman",
+      "eval_mode": 0.5398805937687474,
+      "dropout_on_mean": 0.5250193690640012,
+      "dropout_on_std": 0.012644398131462236,
+      "gain": 0.014861224704746268,
+      "spread_eval": 0.20115748047828674,
+      "spread_dropout_on": 0.2561749815940857,
+      "spread_inflation": 1.27350462426247
+    },
+    {
+      "task": "cyp2c9_inhib",
+      "metric": "pr_auc",
+      "eval_mode": 0.7845792668314278,
+      "dropout_on_mean": 0.7826573820137505,
+      "dropout_on_std": 0.0028325549702470643,
+      "gain": 0.0019218848176772996,
+      "spread_eval": 0.12080851942300797,
+      "spread_dropout_on": 0.17619796097278595,
+      "spread_inflation": 1.4584895321482525
+    },
+    {
+      "task": "cyp2d6_inhib",
+      "metric": "pr_auc",
+      "eval_mode": 0.7019158495812502,
+      "dropout_on_mean": 0.6990427937050094,
+      "dropout_on_std": 0.0016200041288257248,
+      "gain": 0.00287305587624076,
+      "spread_eval": 0.11208599805831909,
+      "spread_dropout_on": 0.1634465456008911,
+      "spread_inflation": 1.4582244743527089
+    },
+    {
+      "task": "cyp3a4_inhib",
+      "metric": "pr_auc",
+      "eval_mode": 0.8703752425229614,
+      "dropout_on_mean": 0.8683970884739572,
+      "dropout_on_std": 0.0006061816614591089,
+      "gain": 0.001978154049004144,
+      "spread_eval": 0.12956969439983368,
+      "spread_dropout_on": 0.18524488806724548,
+      "spread_inflation": 1.4296930229348699
+    },
+    {
+      "task": "cyp2c9_sub",
+      "metric": "pr_auc",
+      "eval_mode": 0.3297359040442286,
+      "dropout_on_mean": 0.32809910373784995,
+      "dropout_on_std": 0.01982788677252975,
+      "gain": 0.0016368003063786385,
+      "spread_eval": 0.17827370762825012,
+      "spread_dropout_on": 0.21985363960266113,
+      "spread_inflation": 1.2332364796109847
+    },
+    {
+      "task": "cyp2d6_sub",
+      "metric": "pr_auc",
+      "eval_mode": 0.6815672641253377,
+      "dropout_on_mean": 0.6763450397748814,
+      "dropout_on_std": 0.01637450777022286,
+      "gain": 0.005222224350456384,
+      "spread_eval": 0.1771850287914276,
+      "spread_dropout_on": 0.22200007736682892,
+      "spread_inflation": 1.2529279639543085
+    },
+    {
+      "task": "cyp3a4_sub",
+      "metric": "roc_auc",
+      "eval_mode": 0.5754349816849818,
+      "dropout_on_mean": 0.5746336996336996,
+      "dropout_on_std": 0.010134471033043152,
+      "gain": 0.0008012820512821595,
+      "spread_eval": 0.19311444461345673,
+      "spread_dropout_on": 0.23858165740966797,
+      "spread_inflation": 1.235441801814565
+    },
+    {
+      "task": "half_life",
+      "metric": "spearman",
+      "eval_mode": 0.4323830927644042,
+      "dropout_on_mean": 0.4203296941592063,
+      "dropout_on_std": 0.014896829282262422,
+      "gain": 0.012053398605197885,
+      "spread_eval": 0.2518045902252197,
+      "spread_dropout_on": 0.30020272731781006,
+      "spread_inflation": 1.1922051422863338
+    },
+    {
+      "task": "cl_micro",
+      "metric": "spearman",
+      "eval_mode": 0.5946163232753825,
+      "dropout_on_mean": 0.5890473961654926,
+      "dropout_on_std": 0.0010785852250774046,
+      "gain": 0.005568927109889876,
+      "spread_eval": 0.240948885679245,
+      "spread_dropout_on": 0.3009781241416931,
+      "spread_inflation": 1.2491368171021966
+    },
+    {
+      "task": "ld50",
+      "metric": "mae",
+      "eval_mode": 0.6290894882794997,
+      "dropout_on_mean": 0.6236222118195105,
+      "dropout_on_std": 0.000965063382195239,
+      "gain": -0.005467276459989234,
+      "spread_eval": 0.22889065742492676,
+      "spread_dropout_on": 0.28699007630348206,
+      "spread_inflation": 1.2538304513263552
+    },
+    {
+      "task": "herg",
+      "metric": "roc_auc",
+      "eval_mode": 0.8689516129032259,
+      "dropout_on_mean": 0.8665689149560117,
+      "dropout_on_std": 0.00736429560342972,
+      "gain": 0.0023826979472141296,
+      "spread_eval": 0.18012239038944244,
+      "spread_dropout_on": 0.2254626303911209,
+      "spread_inflation": 1.2517190667059679
+    },
+    {
+      "task": "ames",
+      "metric": "roc_auc",
+      "eval_mode": 0.8572684408215456,
+      "dropout_on_mean": 0.8561829697115,
+      "dropout_on_std": 0.0010857345074161196,
+      "gain": 0.0010854711100456438,
+      "spread_eval": 0.12374716997146606,
+      "spread_dropout_on": 0.18029765784740448,
+      "spread_inflation": 1.4569840901329538
+    },
+    {
+      "task": "dili",
+      "metric": "roc_auc",
+      "eval_mode": 0.827391304347826,
+      "dropout_on_mean": 0.8240869565217391,
+      "dropout_on_std": 0.0036126222744071214,
+      "gain": 0.0033043478260869064,
+      "spread_eval": 0.20855450630187988,
+      "spread_dropout_on": 0.25318294763565063,
+      "spread_inflation": 1.21398934084489
+    }
+  ]
+}

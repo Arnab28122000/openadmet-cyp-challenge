@@ -1,0 +1,180 @@
+{
+  "run": "h3-mt-fingerprint-5ffcddf5b7",
+  "arch": "fingerprint",
+  "weights": "EMA",
+  "wins": 10,
+  "compared": 21,
+  "scores": {
+    "caco2": 0.38409334675687506,
+    "bioavailability": 0.6385101429996675,
+    "lipophilicity": 0.5508953587554749,
+    "solubility": 0.8443093909536041,
+    "hia": 0.9781893004115227,
+    "pgp": 0.9504798720341242,
+    "bbb": 0.913724183877415,
+    "ppbr": 6.914525056532872,
+    "vdss": 0.503990326386575,
+    "cyp2c9_inhib": 0.7688575928966129,
+    "cyp2d6_inhib": 0.6659804631169848,
+    "cyp3a4_inhib": 0.860884801884665,
+    "cyp2c9_sub": 0.34752549540176786,
+    "cyp2d6_sub": 0.6676984160214917,
+    "cyp3a4_sub": 0.6237408424908425,
+    "half_life": 0.4167826437366859,
+    "cl_micro": 0.5925330668383967,
+    "ld50": 0.6245673031438312,
+    "herg": 0.8709677419354839,
+    "ames": 0.8454111602031704,
+    "dili": 0.8669565217391304,
+    "mean_rank_proxy": 0.24460876917724947
+  },
+  "rows": [
+    {
+      "task": "caco2",
+      "metric": "mae",
+      "nn": 0.3841,
+      "lightgbm": 0.3164,
+      "nn_wins": "."
+    },
+    {
+      "task": "bioavailability",
+      "metric": "roc_auc",
+      "nn": 0.6385,
+      "lightgbm": 0.6766,
+      "nn_wins": "."
+    },
+    {
+      "task": "lipophilicity",
+      "metric": "mae",
+      "nn": 0.5509,
+      "lightgbm": 0.5259,
+      "nn_wins": "."
+    },
+    {
+      "task": "solubility",
+      "metric": "mae",
+      "nn": 0.8443,
+      "lightgbm": 0.8036,
+      "nn_wins": "."
+    },
+    {
+      "task": "hia",
+      "metric": "roc_auc",
+      "nn": 0.9782,
+      "lightgbm": 0.9728,
+      "nn_wins": "Y"
+    },
+    {
+      "task": "pgp",
+      "metric": "roc_auc",
+      "nn": 0.9505,
+      "lightgbm": 0.9085,
+      "nn_wins": "Y"
+    },
+    {
+      "task": "bbb",
+      "metric": "roc_auc",
+      "nn": 0.9137,
+      "lightgbm": 0.8449,
+      "nn_wins": "Y"
+    },
+    {
+      "task": "ppbr",
+      "metric": "mae",
+      "nn": 6.9145,
+      "lightgbm": 8.1026,
+      "nn_wins": "Y"
+    },
+    {
+      "task": "vdss",
+      "metric": "spearman",
+      "nn": 0.504,
+      "lightgbm": 0.4623,
+      "nn_wins": "Y"
+    },
+    {
+      "task": "cyp2c9_inhib",
+      "metric": "pr_auc",
+      "nn": 0.7689,
+      "lightgbm": 0.7835,
+      "nn_wins": "."
+    },
+    {
+      "task": "cyp2d6_inhib",
+      "metric": "pr_auc",
+      "nn": 0.666,
+      "lightgbm": 0.6995,
+      "nn_wins": "."
+    },
+    {
+      "task": "cyp3a4_inhib",
+      "metric": "pr_auc",
+      "nn": 0.8609,
+      "lightgbm": 0.877,
+      "nn_wins": "."
+    },
+    {
+      "task": "cyp2c9_sub",
+      "metric": "pr_auc",
+      "nn": 0.3475,
+      "lightgbm": 0.3326,
+      "nn_wins": "Y"
+    },
+    {
+      "task": "cyp2d6_sub",
+      "metric": "pr_auc",
+      "nn": 0.6677,
+      "lightgbm": 0.6606,
+      "nn_wins": "Y"
+    },
+    {
+      "task": "cyp3a4_sub",
+      "metric": "roc_auc",
+      "nn": 0.6237,
+      "lightgbm": 0.6889,
+      "nn_wins": "."
+    },
+    {
+      "task": "half_life",
+      "metric": "spearman",
+      "nn": 0.4168,
+      "lightgbm": 0.3341,
+      "nn_wins": "Y"
+    },
+    {
+      "task": "cl_micro",
+      "metric": "spearman",
+      "nn": 0.5925,
+      "lightgbm": 0.5622,
+      "nn_wins": "Y"
+    },
+    {
+      "task": "ld50",
+      "metric": "mae",
+      "nn": 0.6246,
+      "lightgbm": 0.6156,
+      "nn_wins": "."
+    },
+    {
+      "task": "herg",
+      "metric": "roc_auc",
+      "nn": 0.871,
+      "lightgbm": 0.7898,
+      "nn_wins": "Y"
+    },
+    {
+      "task": "ames",
+      "metric": "roc_auc",
+      "nn": 0.8454,
+      "lightgbm": 0.8569,
+      "nn_wins": "."
+    },
+    {
+      "task": "dili",
+      "metric": "roc_auc",
+      "nn": 0.867,
+      "lightgbm": 0.9004,
+      "nn_wins": "."
+    }
+  ]
+}

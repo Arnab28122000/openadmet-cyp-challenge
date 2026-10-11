@@ -1,0 +1,47 @@
+{
+  "valid_macro_st_rae": 0.43461099150478866,
+  "per_endpoint": {
+    "CYP1A2_pIC50_direct_inhibition": 0.49795409617587155,
+    "CYP2C9_pIC50_direct_inhibition": 0.3397691541432597,
+    "CYP2D6_pIC50_direct_inhibition": 0.6308914452359301,
+    "CYP3A4_pIC50_direct_inhibition": 0.2708250580390169
+  },
+  "best_epoch": 40,
+  "members": 24,
+  "n_train": 5223,
+  "n_valid": 922,
+  "heads": [
+    "CYP1A2_pIC50_direct_inhibition",
+    "CYP2C9_pIC50_direct_inhibition",
+    "CYP2D6_pIC50_direct_inhibition",
+    "CYP3A4_pIC50_direct_inhibition",
+    "CYP1A2_pIC50_TDI_condition",
+    "CYP2C9_pIC50_TDI_condition",
+    "CYP2D6_pIC50_TDI_condition",
+    "CYP3A4_pIC50_TDI_condition",
+    "CYP1A2_EmaxVsPosCtrl_TDI_condition",
+    "CYP2C9_EmaxVsPosCtrl_TDI_condition",
+    "CYP2D6_EmaxVsPosCtrl_TDI_condition",
+    "CYP3A4_EmaxVsPosCtrl_TDI_condition",
+    "CYP1A2_EmaxVsPosCtrl_direct_inhibition",
+    "CYP2C9_EmaxVsPosCtrl_direct_inhibition",
+    "CYP2D6_EmaxVsPosCtrl_direct_inhibition",
+    "CYP3A4_EmaxVsPosCtrl_direct_inhibition",
+    "CYP1A2_is_TDI",
+    "CYP2C9_is_TDI",
+    "CYP2D6_is_TDI",
+    "CYP3A4_is_TDI",
+    "log2fc_CYP1A2",
+    "log2fc_CYP2C9",
+    "log2fc_CYP2D6",
+    "log2fc_CYP3A4"
+  ],
+  "aux_weight": 0.0,
+  "mean_ensemble_spread": 0.23562589287757874,
+  "pred_std_per_endpoint": {
+    "CYP1A2_pIC50_direct_inhibition": 0.6229637861251831,
+    "CYP2C9_pIC50_direct_inhibition": 0.5804930925369263,
+    "CYP2D6_pIC50_direct_inhibition": 0.4168897867202759,
+    "CYP3A4_pIC50_direct_inhibition": 0.730797529220581
+  }
+}

@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+data/
+runs/*/ckpt*
+*.npz
+*.pt
+*.png
+.DS_Store

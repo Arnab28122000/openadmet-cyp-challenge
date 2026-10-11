@@ -1,0 +1,31 @@
+{
+  "valid_macro": 0.6614533852559186,
+  "per_endpoint": {
+    "CYP1A2_pIC50_direct_inhibition": 0.7232343339068943,
+    "CYP2C9_pIC50_direct_inhibition": 0.5903430846559035,
+    "CYP2D6_pIC50_direct_inhibition": 0.8791014329472326,
+    "CYP3A4_pIC50_direct_inhibition": 0.4531346895136439
+  },
+  "blend_w_gbm": 0.35000000000000003,
+  "metric_id": "official-strae-v1",
+  "offsets": {
+    "CYP1A2_pIC50_direct_inhibition": 0.08000000000000096,
+    "CYP2C9_pIC50_direct_inhibition": 0.08000000000000096,
+    "CYP2D6_pIC50_direct_inhibition": -0.01999999999999913,
+    "CYP3A4_pIC50_direct_inhibition": 0.040000000000000924
+  },
+  "net_seeds": 3,
+  "members": 32,
+  "external_heads": [
+    "veith_CYP1A2",
+    "veith_CYP2C9",
+    "veith_CYP2D6",
+    "veith_CYP3A4"
+  ],
+  "pred_sd": {
+    "CYP1A2_pIC50_direct_inhibition": 0.5393862128257751,
+    "CYP2C9_pIC50_direct_inhibition": 0.5937263369560242,
+    "CYP2D6_pIC50_direct_inhibition": 0.37087482213974,
+    "CYP3A4_pIC50_direct_inhibition": 0.7593429684638977
+  }
+}

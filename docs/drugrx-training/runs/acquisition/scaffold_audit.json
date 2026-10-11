@@ -1,0 +1,91 @@
+[
+  {
+    "pull": "lipophilicity",
+    "endpoint": "lipophilicity",
+    "residual": 3,
+    "test_scaffolds": 419,
+    "residual_in_test_scaffold": 0,
+    "frac_residual_in_test_scaffold": 0.0,
+    "test_scaffolds_covered": 0,
+    "frac_test_scaffolds_covered": 0.0,
+    "nn_sim_mean": 0.1338,
+    "nn_sim_frac_above_0.4": 0.0
+  },
+  {
+    "pull": "ppbr",
+    "endpoint": "ppbr",
+    "residual": 1,
+    "test_scaffolds": 179,
+    "residual_in_test_scaffold": 0,
+    "frac_residual_in_test_scaffold": 0.0,
+    "test_scaffolds_covered": 0,
+    "frac_test_scaffolds_covered": 0.0,
+    "nn_sim_mean": 0.1202,
+    "nn_sim_frac_above_0.4": 0.0
+  },
+  {
+    "pull": "cl_micro",
+    "endpoint": "cl_micro",
+    "residual": 0
+  },
+  {
+    "pull": "herg",
+    "endpoint": "herg",
+    "residual": 16618,
+    "test_scaffolds": 68,
+    "residual_in_test_scaffold": 124,
+    "frac_residual_in_test_scaffold": 0.0075,
+    "test_scaffolds_covered": 19,
+    "frac_test_scaffolds_covered": 0.2794,
+    "nn_sim_mean": 0.369,
+    "nn_sim_frac_above_0.4": 0.2439
+  },
+  {
+    "pull": "half_life",
+    "endpoint": "half_life",
+    "residual": 18275,
+    "test_scaffolds": 105,
+    "residual_in_test_scaffold": 557,
+    "frac_residual_in_test_scaffold": 0.031,
+    "test_scaffolds_covered": 21,
+    "frac_test_scaffolds_covered": 0.2,
+    "nn_sim_mean": 0.3602,
+    "nn_sim_frac_above_0.4": 0.2761
+  },
+  {
+    "pull": "caco2",
+    "endpoint": "caco2",
+    "residual": 17690,
+    "test_scaffolds": 73,
+    "residual_in_test_scaffold": 144,
+    "frac_residual_in_test_scaffold": 0.0082,
+    "test_scaffolds_covered": 15,
+    "frac_test_scaffolds_covered": 0.2055,
+    "nn_sim_mean": 0.3191,
+    "nn_sim_frac_above_0.4": 0.1854
+  },
+  {
+    "pull": "solubility",
+    "endpoint": "solubility",
+    "residual": 18045,
+    "test_scaffolds": 618,
+    "residual_in_test_scaffold": 995,
+    "frac_residual_in_test_scaffold": 0.0553,
+    "test_scaffolds_covered": 68,
+    "frac_test_scaffolds_covered": 0.11,
+    "nn_sim_mean": 0.2752,
+    "nn_sim_frac_above_0.4": 0.0809
+  },
+  {
+    "pull": "vdss",
+    "endpoint": "vdss",
+    "residual": 13922,
+    "test_scaffolds": 152,
+    "residual_in_test_scaffold": 64,
+    "frac_residual_in_test_scaffold": 0.0046,
+    "test_scaffolds_covered": 24,
+    "frac_test_scaffolds_covered": 0.1579,
+    "nn_sim_mean": 0.2659,
+    "nn_sim_frac_above_0.4": 0.0724
+  }
+]

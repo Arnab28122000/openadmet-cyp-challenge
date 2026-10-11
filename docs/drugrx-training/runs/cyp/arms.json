@@ -1,0 +1,98 @@
+{
+  "CYP1A2_pIC50_direct_inhibition": {
+    "inner_mean": {
+      "count-rdkit2d": 0.5759232342326005,
+      "maplight": 0.5868016607869884,
+      "maplight+basicity": 0.5866602634803446
+    },
+    "inner_sd": {
+      "count-rdkit2d": 0.06962194247470622,
+      "maplight": 0.07636119652894417,
+      "maplight+basicity": 0.08036739531495507
+    },
+    "chosen": "count-rdkit2d",
+    "outer_strae": {
+      "count-rdkit2d": 0.6625125302022897,
+      "maplight": 0.6795187976324194,
+      "maplight+basicity": 0.6845337047708606
+    },
+    "gain_vs_maplight": 0.016983668327999687,
+    "ci": [
+      0.0066217442513807345,
+      0.028218554561935522
+    ],
+    "decided": true
+  },
+  "CYP2C9_pIC50_direct_inhibition": {
+    "inner_mean": {
+      "count-rdkit2d": 0.4059475285474294,
+      "maplight": 0.38904192907900464,
+      "maplight+basicity": 0.38819553578487803
+    },
+    "inner_sd": {
+      "count-rdkit2d": 0.0447251080991192,
+      "maplight": 0.05062177104821992,
+      "maplight+basicity": 0.05112643730404939
+    },
+    "chosen": "maplight+basicity",
+    "outer_strae": {
+      "count-rdkit2d": 0.45864129469798876,
+      "maplight": 0.46107032795054365,
+      "maplight+basicity": 0.4690303564878453
+    },
+    "gain_vs_maplight": -0.007975025920297547,
+    "ci": [
+      -0.014167961566818533,
+      -0.0018459832327331518
+    ],
+    "decided": false
+  },
+  "CYP2D6_pIC50_direct_inhibition": {
+    "inner_mean": {
+      "count-rdkit2d": 0.6150945832882083,
+      "maplight": 0.5988565129607866,
+      "maplight+basicity": 0.5844126012596643
+    },
+    "inner_sd": {
+      "count-rdkit2d": 0.04626562391603917,
+      "maplight": 0.039396290768146686,
+      "maplight+basicity": 0.038445209281756716
+    },
+    "chosen": "maplight+basicity",
+    "outer_strae": {
+      "count-rdkit2d": 0.681198113211276,
+      "maplight": 0.6788410306131369,
+      "maplight+basicity": 0.6790328007944163
+    },
+    "gain_vs_maplight": -0.00023304688695153464,
+    "ci": [
+      -0.01129202986919094,
+      0.010955293061020246
+    ],
+    "decided": false
+  },
+  "CYP3A4_pIC50_direct_inhibition": {
+    "inner_mean": {
+      "count-rdkit2d": 0.3286630755360013,
+      "maplight": 0.32799475890056357,
+      "maplight+basicity": 0.3300978871922363
+    },
+    "inner_sd": {
+      "count-rdkit2d": 0.02578520920975455,
+      "maplight": 0.02860875492689045,
+      "maplight+basicity": 0.035318974601039194
+    },
+    "chosen": "maplight",
+    "outer_strae": {
+      "count-rdkit2d": 0.4802239828567344,
+      "maplight": 0.4825472275348909,
+      "maplight+basicity": 0.4820758200772899
+    },
+    "gain_vs_maplight": 0.0,
+    "ci": [
+      0.0,
+      0.0
+    ],
+    "decided": false
+  }
+}

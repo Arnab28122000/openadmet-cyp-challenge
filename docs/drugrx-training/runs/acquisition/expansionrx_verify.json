@@ -1,0 +1,219 @@
+{
+  "repos": [
+    {
+      "repo": "openadmet/openadmet-expansionrx-challenge-data",
+      "rows": 7608,
+      "smiles_column": "SMILES",
+      "with_smiles": 7608,
+      "standardised_ok": 7608,
+      "standardise_fail_rate": 0.0,
+      "unique_molecules": 7608,
+      "overlap_any_test": 0,
+      "overlap_held": 0
+    },
+    {
+      "repo": "openadmet/openadmet-expansionrx-challenge-train-data",
+      "rows": 5326,
+      "smiles_column": "SMILES",
+      "with_smiles": 5326,
+      "standardised_ok": 5326,
+      "standardise_fail_rate": 0.0,
+      "unique_molecules": 5326,
+      "overlap_any_test": 0,
+      "overlap_held": 0
+    }
+  ],
+  "endpoints": [
+    {
+      "endpoint": "ames",
+      "test_size": 1443,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.1911,
+      "nn_frac_above_0.4": 0.0,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "bbb",
+      "test_size": 394,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.1947,
+      "nn_frac_above_0.4": 0.0051,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "bioavailability",
+      "test_size": 128,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.2238,
+      "nn_frac_above_0.4": 0.0078,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "caco2",
+      "test_size": 178,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.2025,
+      "nn_frac_above_0.4": 0.0056,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "cl_micro",
+      "test_size": 221,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.2614,
+      "nn_frac_above_0.4": 0.0362,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "cyp2c9_inhib",
+      "test_size": 2411,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.226,
+      "nn_frac_above_0.4": 0.0054,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "cyp2c9_sub",
+      "test_size": 135,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.2206,
+      "nn_frac_above_0.4": 0.0,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "cyp2d6_inhib",
+      "test_size": 2621,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.2235,
+      "nn_frac_above_0.4": 0.0069,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "cyp2d6_sub",
+      "test_size": 134,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.2172,
+      "nn_frac_above_0.4": 0.0,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "cyp3a4_inhib",
+      "test_size": 2462,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.2372,
+      "nn_frac_above_0.4": 0.0057,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "cyp3a4_sub",
+      "test_size": 134,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.2166,
+      "nn_frac_above_0.4": 0.0,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "dili",
+      "test_size": 96,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.2172,
+      "nn_frac_above_0.4": 0.0104,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "half_life",
+      "test_size": 134,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.2174,
+      "nn_frac_above_0.4": 0.0075,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "herg",
+      "test_size": 123,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.2379,
+      "nn_frac_above_0.4": 0.0,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "hia",
+      "test_size": 117,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.1948,
+      "nn_frac_above_0.4": 0.0,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "ld50",
+      "test_size": 1466,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.1962,
+      "nn_frac_above_0.4": 0.0014,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "lipophilicity",
+      "test_size": 420,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.2556,
+      "nn_frac_above_0.4": 0.0214,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "pgp",
+      "test_size": 245,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.2236,
+      "nn_frac_above_0.4": 0.0,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "ppbr",
+      "test_size": 324,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.2535,
+      "nn_frac_above_0.4": 0.0062,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "solubility",
+      "test_size": 1954,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.1986,
+      "nn_frac_above_0.4": 0.0005,
+      "nn_frac_above_0.7": 0.0
+    },
+    {
+      "endpoint": "vdss",
+      "test_size": 221,
+      "identity_overlap": 0,
+      "frac_test_hit": 0.0,
+      "nn_sim_mean": 0.1897,
+      "nn_frac_above_0.4": 0.0045,
+      "nn_frac_above_0.7": 0.0
+    }
+  ],
+  "total_unique": 7608,
+  "total_overlap_any_test": 0
+}
