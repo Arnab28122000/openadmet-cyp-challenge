@@ -409,6 +409,20 @@ Each was found by re-measurement, adversarial review or a closer reading of a so
 
 Start with `docs/research-lab/NOTEBOOK.md` (newest entry last) and `docs/research-lab/findings/`.
 
+### Models on Hugging Face
+
+[`arnab2812/openadmet-cyp-talindrew`](https://huggingface.co/arnab2812/openadmet-cyp-talindrew)
+holds every scored submission (regression v4–v9 with their placement parameters, both TDI
+submissions), the v4 source build's report and net predictions, and every leaderboard row this
+entry received. **It is private until the challenge closes on 2026-11-03**, because its contents
+reproduce the entry's predictions on the blinded test set, and opens then.
+
+The weights behind v4–v9 were not persisted: the submission builder ran with checkpointing off
+and saved only predictions. Every v5–v9 submission is a monotone placement of v4's predictions,
+so the CSVs are a complete record of what was scored. The next build will save every member, the
+preprocessing state, the blend weight and a manifest under `runs/<run_id>/` in the same
+repository, with a check that the saved artefacts re-predict that build's submission.
+
 ---
 
 *Metric: macro-averaged soft-threshold relative absolute error against the published credible
