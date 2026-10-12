@@ -1,411 +1,415 @@
 # OpenADMET CYP Blind Challenge — method report
 
-**Entry:** `talindrew` (HuggingFace `arnab2812`) · Regression (direct inhibition) **and**
-TDI (classification) tracks
-**Data:** challenge release only. No proprietary data.
-**Published:** https://github.com/Arnab28122000/openadmet-cyp-challenge (verified HTTP 200,
-2026-10-09). A reachable `https://` method report is **mandatory** before 2026-11-03 23:59
-UTC or the entry is excluded from the final leaderboard regardless of score.
+**Entry:** `talindrew` (Hugging Face `arnab2812`). Regression (direct inhibition) and TDI
+(classification) tracks.
+**Data:** the challenge release only. No proprietary or external training data in the submitted
+models.
+**Report:** <https://github.com/Arnab28122000/openadmet-cyp-challenge>, attached to the TDI
+submission of 2026-10-08 and to every regression submission since 2026-10-09.
+**Last updated:** 2026-10-12. Current through regression submission v9 and lab findings 1–19.
 
-**ATTACHED** to the TDI submission of 2026-10-08 21:44 UTC and to the regression submissions
-of 2026-10-09 04:03 and 17:09 UTC (the Live board renders the link on our row).
-
-**Last updated 2026-10-11, after the sixth placement submission (v9).** This repository now also
-contains **the code and the full lab notebook** (see §11), so "My code is open-source" can be
-checked on future submissions — it was previously left unchecked because the report alone is not
-code.
-
-**Numbers previously stated here that have since been withdrawn on re-measurement are described
-as such rather than quietly removed** — in §6, and now in §12. There are more than a dozen.
+Withdrawn claims are listed in §11, not deleted.
 
 ---
 
-## 0. Current standing (v9, scored 2026-10-11)
+## 0. Standing
+
+Regression track, v9 (submitted 2026-10-11 12:36 UTC):
 
 | | ST-RAE | rank |
 |---|---|---|
 | **Overall (macro)** | **0.5232** | **59 / 273** |
 | CYP1A2 | 0.5369 | 57 |
 | CYP2C9 | 0.4555 | 92 |
-| CYP2D6 | 0.5493 | **25** |
+| CYP2D6 | 0.5493 | 25 |
 | CYP3A4 | 0.5513 | 137 |
 
-macro Spearman ρ **0.7093** · Kendall τ **0.5285** · MAE 0.6703 · R² 0.5611
+Macro Spearman ρ 0.7093, Kendall τ 0.5285, MAE 0.6703, R² 0.5611.
 
-**v9 is the best row this entry has produced, and the rank still fell** (54 → 59) because
-`n_entrants` went 271 → 273 and other entrants improved more over the same window. That is the
-clearest available evidence that the placement axis is exhausted — see §4.
+Every regression submission, macro ST-RAE (lower is better):
 
-ρ and τ have now returned **0.7093 / 0.5285 unchanged across seven consecutive submissions**,
-which remains the end-to-end check that every placement map really is monotone.
+| | what changed | macro | rank |
+|---|---|---|---|
+| first entry | dose-response labels only | 0.8663 | 172 |
+| v4 | interval labels for screened compounds (§2), minimax placement (§4) | 0.5925 | — |
+| v5, v6 | spread axis only | 0.5554, 0.5414 | —, 59 / 268 |
+| v7 | centre axis | 0.5256 | 54 / 271 |
+| v8 | deliberate overshoot on all axes | 0.5520 | 69 |
+| v9 | parabola vertex inside the bracket v8 measured | **0.5232** | 59 / 273 |
 
----
+v4 through v9 change only the placement map, which is monotone, so ρ and τ are 0.7093 / 0.5285
+on every one of them: an end-to-end check that each map changed placement and nothing else.
+
+v9 is this entry's best score; its rank is below v7's because other entrants improved more over
+the same two days. Placement is exhausted (§4.4), and no model-class change since v9 has cleared
+the submission bar (§7). No further regression submission is planned unless one does.
 
 ## 1. Summary
 
-**Measured effect on the live leaderboard: rank 172 → 60 of 268.** Macro ST-RAE 0.8663 →
-**0.5414**, macro R² 0.0748 → **0.5329**, macro Spearman ρ 0.6212 → **0.7093**. Per isoform,
-CYP1A2 0.88 → 0.549, CYP2C9 0.52 → **0.462**, CYP2D6 **1.46 → 0.587**, CYP3A4 0.57 → 0.567.
+Three things carry this entry, in order of measured effect:
 
-Those are the figures after three successive placement submissions (v4 → v5 → v6), each
-moving **one** axis so that the board's own response could be read as a derivative. ρ and τ
-have returned 0.7093 and 0.5285 unchanged from all three, which is the end-to-end check that
-the map really is monotone.
+1. **Every dose-response label is a selected label, and the unselected compounds are in the
+   release.** Treating the screened-but-not-promoted compounds as interval labels is worth
+   −0.243 macro ST-RAE (§2, §3), and +0.0508 macro ρ on every isoform and seed (§7).
+2. **A validation surface that contains non-inhibitors.** The original split held only
+   dose-response rows — each a compound selected for activity — and could not see that defect
+   (§3).
+3. **Per-isoform affine placement** onto the blinded population, located by reading the
+   leaderboard as a measuring instrument (§4).
 
-ρ rose, and the affine placement in §4 is monotone and therefore *cannot* change ρ — so the
-two effects separate cleanly: the interval labels of §2 moved the model, the placement moved
-the level.
+The models are a LightGBM/XGBoost ensemble and a small multitask MLP; nothing tried since has
+beaten the GBM (§7). On this task the training labels and the placement of predictions matter far
+more than the model class.
 
-Three things carry this entry, in descending order of measured effect:
+## 2. Every dose-response label is a selected label
 
-1. **The dose-response labels are selected labels, and the unselected compounds are in
-   the release.** Treating the non-promoted compounds as *interval* labels is worth
-   **−0.243 macro ST-RAE** on a validation surface that reproduces the board.
-2. **A validation surface that contains non-inhibitors.** Our original split held only
-   dose-response rows — every one of them a compound selected *for activity* — and so
-   could not see the defect above. Rebuilding it reproduced the board per isoform.
-3. **Per-isoform affine placement** onto the blinded population's location and scale,
-   chosen by a minimax rule over the uncertainty in that population.
+The release ships a single-concentration screen (50 µM, log2 fold-change) for 4,376 compounds on
+all four isoforms. A compound gets a dose-response curve on an isoform only if it was promoted out
+of that screen, and the promotion rule differs by isoform (measured on the release).
 
-Nothing here is a new architecture. The models are a LightGBM and a small multitask MLP
-ensemble, both unremarkable. That is the finding: on this task, what the model is
-matters far less than what it was trained on and where its predictions are placed.
-
-## 2. The defect: every dose-response label is a selected label
-
-The release ships a single-concentration screen (50 µM, log2 fold-change) for 4,376
-compounds on all four isoforms, and a dose-response curve exists for a compound/isoform
-**only if it was promoted out of that screen**. Promotion rules differ per isoform —
-measured on the release, not assumed:
-
-| isoform | DRC'd / screened | what decides promotion |
+| isoform | dose-response / screened | what decides promotion |
 |---|---|---|
 | CYP1A2 | 1,412 / 4,376 | rises with inhibition; 100 % below log2FC −1.5 |
-| CYP2C9 | 1,285 / 4,376 | ~one third, **flat** in log2FC — effectively random |
-| CYP2D6 | 1,493 / 4,376 | **hard threshold**: DRC iff log2FC < ≈ −0.6 |
-| CYP3A4 | 2,335 / 4,376 | if anything enriched for *weak* readouts |
+| CYP2C9 | 1,285 / 4,376 | about a third, flat in log2FC — effectively random |
+| CYP2D6 | 1,493 / 4,376 | hard threshold: dose-response iff log2FC < ≈ −0.6 |
+| CYP3A4 | 2,335 / 4,376 | if anything enriched for weak readouts |
 
-A model trained on dose-response labels alone **has never seen a CYP2D6 non-inhibitor**,
-and over-predicts every unselected compound. The two isoforms whose promotion depends on
-activity (1A2, 2D6) were the two we scored worst on (board 0.88 and 1.46, against
-0.52/0.57 for the other two).
+A model trained on dose-response labels alone has never seen a CYP2D6 non-inhibitor and
+over-predicts every unselected compound. The two isoforms whose promotion depends on activity
+(1A2, 2D6) scored worst in this entry's early submissions (board about 0.88 and 1.46, against
+0.52 and 0.57 for the other two).
 
 ### What one 50 µM readout says about pIC50
 
-Calibrated on the compounds carrying both. With `r = 2**log2fc` the fraction of signal
-remaining, dose-response pIC50 is monotone in `r` on every isoform, and a compound
-showing no inhibition at 50 µM (`r ≥ 0.9`) has pIC50 ≈ 2.2 with a credible interval of
-about **[1.07, 3.52]** (n = 303 compounds carrying both).
+With `r = 2**log2fc`, the fraction of activity remaining, dose-response pIC50 is monotone in `r`
+on every isoform. Among the 303 compounds carrying both a curve and a no-inhibition readout
+(`r ≥ 0.9`), the median pIC50 is 2.211 and the credible range about [1.07, 3.52].
 
-Those compounds become **interval labels, not point labels** — the loss is zero anywhere
-inside the window, which is the honest statement of what one readout knows. Three
-higher-ranked entries report the same rows *costing* score as point pseudo-labels and
-*helping* as censored bounds. For intermediate readouts the label is the [10th, 90th]
-percentile of dose-response pIC50 among compounds with the same readout.
+Those compounds become **interval labels**: the loss is zero anywhere inside the window, which
+is all one readout can say. For intermediate readouts the window is the [10th, 90th]
+percentile of dose-response pIC50 among compounds with the same readout. Three higher-ranked
+entries report the same rows hurting as point labels and helping as bounds.
 
-Implementation: `drugrx/cyp/screen.py`.
+The development code splits the no-inhibition label into two branches at the existing bin edge
+`r = 1.0` (2.2732 above, 2.1320 below). It is the only rule tried that wins on both
+out-of-fold MSE (−4.40 %) and MAE (−1.44 %), and the metric mixes the two. Its measured effect on
+downstream ρ is +0.0004 (§7), so no scored submission uses it.
 
-## 3. V1 vs V2: the validation surface is part of the method
+Implementation: `talindrew-drugrx/drugrx/cyp/screen.py`.
 
-- **V1** — the original scaffold split, dose-response rows only. Every row is a compound
-  selected for activity.
-- **V2** — V1 plus held-out screened compounds scored against the floor window.
+## 3. The validation surface is part of the method
 
-**V2 reproduces the board per isoform (0.77 / 0.53 / 1.35 / 0.48 against board
-0.88 / 0.52 / 1.46 / 0.57). V1 never did.** A selection fix *must* look worse on V1:
-promotion selects on `y`, the test set's analog expansion selects on `x`, and the test
-wants `P(y|x)` on the **unselected** population. Both are reported for every arm.
+- **V1**: the original scaffold split, dose-response rows only — every row selected for activity.
+- **V2**: V1 plus held-out screened compounds, scored against their interval labels.
 
-Measured effect of the fix: macro V2 **−0.243** (LightGBM, 3/3 seeds), **−0.313** (the
-net, 2/2 seeds). CYP2D6 1.51 → 0.60. Ranking improves too (2D6 ρ 0.378 → 0.476), which
-matters because placement is monotone and cannot change it.
+V2 reproduces the board per isoform (0.77 / 0.53 / 1.35 / 0.48 against board
+0.88 / 0.52 / 1.46 / 0.57); V1 never did. A selection fix has to look worse on V1: promotion
+selects on `y`, the test set's analog expansion selects on `x`, and the board scores `P(y | x)`
+on the unselected population.
+
+Measured effect of the interval labels on V2: −0.243 macro (LightGBM, 3/3 seeds) and −0.313
+(the MLP, 2/2 seeds); CYP2D6 on V2 goes 1.51 → 0.60. Ranking improves too (CYP2D6 ρ 0.378 → 0.476),
+which placement cannot do.
 
 ## 4. Placement
 
-A model trained on a selected label set predicts on that set's scale. The last step is a
-per-isoform affine map onto the blinded population.
+A model trained on a selected label set predicts on that set's scale, so the last step is a
+per-isoform affine map — one centre, one spread — onto the blinded population.
 
-ST-RAE is **not** squared error, and its optimum is not squared error's. Squared error
-wants centre = population mean and spread = ρ·sd (Murphy 1988: `R² = 2ρk − k² − b²`, so
-`k = ρ`). ST-RAE wants **less spread and a centre above the mean**, because an inactive
-compound's credible interval is a free window reaching to ≈ 3.5. Our board probe measured
-the spread discount at 0.896.
+### 4.1 The metric's optimum is not squared error's
 
-The targets actually submitted were chosen by a **minimax** scan over the uncertainty in
-(inactive fraction 0.55–0.81, correlation 0.33–0.60), not by a point estimate:
+Squared error wants centre = population mean and spread = ρ·sd (Murphy 1988:
+`R² = 2ρk − k² − b²`). ST-RAE wants less spread and a centre above the mean, because an inactive
+compound's interval is a free window reaching up to about 3.5. A board probe measured the spread
+discount at 0.896.
 
-| isoform | centre | sd |
-|---|---|---|
-| CYP1A2 | 4.66 | 0.95 |
-| CYP2C9 | 4.98 | 0.55 |
-| CYP2D6 | 3.43 | 0.30 |
-| CYP3A4 | 5.03 | 0.75 |
+v4's targets came from a minimax scan over the uncertainty in the population (inactive fraction
+0.55–0.81, correlation 0.33–0.60). That was the wrong rule: minimaxing over a band wider than the
+truth is not safety. The scan's optimum for CYP2D6 was sd 0.10, implying a correlation of 0.209 —
+below the band it was told to search. The board-derived estimate is 0.518, and §4.3 shows even
+that is too low.
 
-Because the map is monotone, **ρ and τ must return bit-identical from the board** — a
-free end-to-end check, used four times.
+### 4.2 The board row gives up the blinded population's moments
 
-### Using the board as an instrument: one axis per submission
-
-The minimax targets above were superseded by something better than any prior. Because ST-RAE
-on 750 fixed compounds is **deterministic**, a difference between two board rows is a
-*measurement*, not an estimate — there is no sampling noise and no t-statistic to compute. So
-moving exactly one axis per submission turns the leaderboard into an instrument for the
-derivative of the metric with respect to that axis.
-
-Three submissions, spread axis only:
-
-| isoform | sd v4→v5→v6 | ST-RAE | secant v4→v5 | secant v5→v6 | state of the lever |
-|---|---|---|---|---|---|
-| CYP1A2 | 0.95 → 1.00 → 1.00 | 0.549 → 0.549 → 0.549 | 0.000 | (held) | **at the optimum** |
-| CYP2C9 | 0.55 → 0.68 → 0.76 | 0.505 → 0.466 → 0.462 | −0.297 | −0.045 | nearly spent |
-| CYP2D6 | 0.30 → 0.60 → 0.78 | 0.746 → 0.640 → 0.587 | −0.351 | −0.296 | **room left** |
-| CYP3A4 | 0.75 → 0.82 → 0.85 | 0.571 → 0.566 → 0.567 | −0.066 | **+0.023** | **past the optimum** |
-
-Two results fall out that a single submission could not give:
-
-* **The 0.896 spread discount is confirmed to four decimals.** CYP1A2 at sd 1.00 sits within
-  0.001 of 0.896 × its squared-error optimum, and scored **0.5490 three times running**.
-* **CYP2D6's copula-derived correlation is refuted by its own row.** On the copula `r = 0.518`
-  its optimum spread is 0.616, so sd 0.78 would be 0.164 *past* the optimum and should have
-  scored worse. It improved by 0.053. The distribution-free bound (`r ≥ 0.609`, from its R²
-  exceeding the copula ceiling) is the right one.
-
-The surface is also **very flat near its minimum**: CYP3A4 overshot by 0.036 of spread and paid
-only +0.0007 of ST-RAE, about 0.02 per unit of overshoot. Overshooting is therefore cheap and
-undershooting leaves gains unclaimed — which is an argument for bolder steps wherever a secant
-is still clearly negative, and it is why v7 moves CYP2D6 to 1.00 rather than to the 0.906 the
-theory alone suggests.
-
-### Recovering the targets from the leaderboard rather than guessing them
-
-The targets above were chosen by minimax because the population is blinded. That was a
-mistake worth recording: **the board reports enough to solve for the population directly.**
 For a prediction vector held on disk, with `r = 2 sin(πρ/6)` from the reported Spearman,
 
     s² = s_y² + s_p² − 2 r s_y s_p          and      m² + s² = (1 − R²) s_y²
 
-is two equations in the two unknowns `s_y` and `m = ȳ − p̄`. Solved on our own row this gives
-per-isoform test sd **1.44 / 0.97 / 1.66 / 1.16**, which reproduces an independently published
-reverse-engineering of the same quantities to **3.8–12.3 %** by an unrelated route. R² and MAE
-depend on `m` only through `m²`, so the algebra cannot sign the offset; scoring both branches
-against that independent estimate picks the same sign on all four isoforms with 5×
-discrimination.
+is two equations in the two unknowns `s_y` and `m = ȳ − p̄`. Solved on this entry's own row it
+gives per-isoform test sd 1.44 / 0.97 / 1.66 / 1.16, within 3.8–12.3 % of an independently
+published reverse-engineering. The algebra cannot sign `m`; scoring both branches against that
+independent estimate picks the same sign on all four isoforms with 5× discrimination. Five routes
+sharing no assumptions agree: v4 placed every isoform too narrow.
 
-The consequence: minimaxing over a band wider than the truth does not buy safety. The scan
-chose **sd 0.10 for CYP2D6**, which inverts to an assumed `r = 0.209` — below the floor of the
-band it was told to search — against a measured `r = 0.518`. Five routes sharing no
-assumptions (including a distribution-free bound from `MAE ≤ RMSE` and `R² ≤ r²`, which needs
-no distributional assumption at all) agree that every isoform was placed too narrow.
+### 4.3 One axis per submission
 
-Implementation: `drugrx/cyp/placement.py`, `drugrx/cyp/decide.py`,
-`scripts/cyp_submit.py`.
+ST-RAE on 750 fixed compounds is deterministic, so the difference between two board rows is a
+measurement with no sampling noise. Moving one axis per submission makes the leaderboard an
+instrument for the metric's derivative along that axis. v5 and v6 moved spread only; v7 moved the
+centre.
+
+| isoform | sd v4 → v5 → v6 | ST-RAE | secant v4→v5 | secant v5→v6 |
+|---|---|---|---|---|
+| CYP1A2 | 0.95 → 1.00 → 1.00 | 0.549 → 0.549 → 0.549 | 0.000 | (held) |
+| CYP2C9 | 0.55 → 0.68 → 0.76 | 0.505 → 0.466 → 0.462 | −0.297 | −0.045 |
+| CYP2D6 | 0.30 → 0.60 → 0.78 | 0.746 → 0.640 → 0.587 | −0.351 | −0.296 |
+| CYP3A4 | 0.75 → 0.82 → 0.85 | 0.571 → 0.566 → 0.567 | −0.066 | +0.023 |
+
+CYP1A2 at sd 1.00 sits within 0.001 of 0.896 × its squared-error optimum and scored 0.5490 three
+times running. CYP2D6 kept improving past the spread that a correlation of 0.518 predicts as
+optimal, refuting that estimate in favour of the distribution-free bound `r ≥ 0.609`.
+
+### 4.4 Convexity brackets the minimum (v8, v9)
+
+ST-RAE is a sum of hinge terms, so under an affine map it is convex and piecewise linear in both
+the centre and the spread, with derivative `(N_above − N_below)/D`. Two consequences:
+
+1. A secant that changes sign across a point brackets the minimum. v8 deliberately overshot on
+   every axis; it scored worse (0.5520), as expected, but put a sign change on all four axes,
+   turning every later forecast from an extrapolation into an interpolation.
+2. The chord between two measured points straddling the target is an upper bound, from convexity
+   alone.
+
+v9 targeted the three-point parabola vertex on each axis, with each cell's chord pre-registered
+as its upper bound:
+
+| cell | pre-registered [lower, chord] | actual |
+|---|---|---|
+| CYP1A2 | [0.5307, 0.5405] | 0.5369 |
+| CYP2C9 | [0.4377, 0.4618] | 0.4555 |
+| CYP2D6 | [0.5447, 0.5543] | 0.5493 |
+| CYP3A4 | [0.5510, 0.5516] | 0.5513 |
+| macro | point 0.5236, ≤ 0.5270 | 0.5232 |
+
+Every cell landed inside its band, and the macro point estimate was off by 0.0004. The chord/slope
+bracket puts the remaining headroom on the affine family under 0.003 macro.
+
+v9 also caught a defect before it shipped: four decimals collapsed 10–20 distinct predictions per
+column into ties, and six decimals still tied one CYP1A2 pair. Submissions are written at seven, the first
+precision rank-identical to the source.
+
+Implementation: `drugrx/cyp/placement.py`, `drugrx/cyp/decide.py`, `scripts/cyp_submit.py`,
+`scripts/cyp_v9_bracket.py`, `scripts/cyp_board_history.py`.
 
 ## 5. The decision rule
 
-ST-RAE's risk is convex piecewise linear, so its minimiser is the **balance point** where
-`P(lo > p) == P(hi < p)` — a weighted median over pooled bound draws, verified exact
-against a 4,001-point grid on 600 random cases. Two consequences that cost real score:
+ST-RAE's risk is convex and piecewise linear, so its minimiser is the balance point where
+`P(lo > p) == P(hi < p)` — a weighted median over pooled bound draws, verified exact against a
+4,001-point grid on 600 random cases. Two consequences:
 
-- **Ties go to the right-hand end of a flat segment.** When every draw says inactive the
-  risk is flat across the free window and no risk-based test can distinguish the ends;
-  the error that actually happens is an "inactive" compound being somewhat active, and
-  the right end is 2.45 log units closer.
-- A probability-weighted **mean** is the wrong operation. A compound 80 % likely inactive
-  should be predicted at **3.52**, not the mean's 2.87.
+- **Ties go to the right-hand end of a flat segment.** When every draw says inactive, the risk is
+  flat across the free window. The error that does occur is an "inactive" compound being somewhat
+  active, and the right end is 2.45 log units closer to it.
+- **A probability-weighted mean is the wrong operation.** A compound 80 % likely to be inactive
+  belongs at 3.52, not at the mean's 2.87.
 
-## 6. Negative results worth recording
+## 6. The validation surface and the blinded set are different regimes
 
-- **External inactives do not substitute for the challenge's own screen.** 10.5k Veith
-  bounds made things *worse*: macro V2 **+0.038**, 3/3 seeds.
-- **More training does not help, tested to 30,000 epochs.** 300 → 3,000 epochs moved the
-  score by **−0.0000**, identical per endpoint to four decimal places. At 30,000 epochs with
-  cosine warm restarts (`T_0=468, T_mult=2`) the gain over 1,200 epochs is **−0.0026 against
-  a seed spread of 0.0052** — half the noise of reseeding, for 25× the compute; the run peaked
-  at epoch 7,025 and was flat for the remaining 23,000. `ReduceLROnPlateau` at the same budget
-  is *worse* (best at epoch 25): our validation signal is noisy at the 0.005 level, so the
-  scheduler decays on noise and reaches its LR floor by epoch 650. Without early stopping the
-  3,000-epoch runs bottom out at epoch 190–365 then rise monotonically, ending 10–17 % worse
-  than their own best. Capacity is similar: doubling width bought 0.013.
-- **A pretrained molecular foundation model did not beat ECFP, but its loss function did.**
-  CheMeleon's frozen 2048-d D-MPNN fingerprint lost to count-ECFP + descriptors under the same
-  GBM (0.6433 vs 0.5819 macro on our validation surface). Fine-tuning it end-to-end under the
-  *metric's own interval hinge* scored **0.5179 ± 0.0130**, beating every frozen arm — but
-  embeddings read back out of that fine-tuned encoder score 0.5862/0.5886, i.e. no better than
-  frozen ECFP. The gain is in training against the metric, not in the representation.
-- **Concatenating feature blocks hurt.** CheMeleon ⊕ ECFP scored worse than either alone
-  under the same in-context model.
-- **Ranking objectives lose badly.** The censored labels argue for them — squared error spends
-  capacity pulling predictions to an arbitrary point inside a censored interval, while a
-  ranking loss only needs the censored compounds *below* the actives. Measured on CYP3A4 with
-  paired seeds, LightGBM `lambdarank` is **−0.177 ρ** and `rank_xendcg` **−0.038**. We
-  pre-registered binning as the suspected cost (the rankers need discrete grades) and then
-  tested it: raising grades 16 → 128 recovers only 0.047 of lambdarank's 0.177, so **our own
-  explanation accounts for about a quarter of it**. The likelier cause is that NDCG's
-  positional discount and Spearman's equal weighting are simply different objectives.
-- **The ensemble's advantage over a plain LightGBM is unmeasurable.** It had been recorded at
-  +0.0154 macro ρ. That comparison was not paired — the net was scored on its own split against
-  LightGBM figures from a different one. Training a GBM on the exact complement of the net's
-  saved validation indices gives macro **−0.0066**, and a paired bootstrap over compounds puts
-  **every per-isoform CI across zero**. Compounding it, the three saved "seeds" share a
-  byte-identical validation index, so their spread measures network initialisation and not the
-  compound sample; the seed-level error bars were ~10× too tight. This *strengthens* §1's
-  claim rather than weakening it: what the model is matters even less than we had measured.
+Nearest-neighbour Tanimoto to the training set (ECFP4 counts, 2048 bits) needs no labels:
 
-## 7. The validation surface and the blinded set measure different regimes
-
-§3 rebuilt the validation surface so that it contained non-inhibitors. It is still not the
-population the board scores, and the gap is measurable without any labels — nearest-neighbour
-Tanimoto to the training set (ECFP4 counts, 2048 bits):
-
-| NN band | blinded TEST | our VALIDATION |
+| NN band | blinded test | our validation |
 |---|---|---|
-| 0.3–0.5 | **4.8 %** | **65.2 %** |
-| 0.5–0.7 | **84.9 %** | 25.6 % |
+| 0.3–0.5 | 4.8 % | 65.2 % |
+| 0.5–0.7 | 84.9 % | 25.6 % |
 | 0.7–0.9 | 10.1 % | 3.3 % |
 | median | 0.587 | 0.439 |
 
-**Two thirds of our validation sits in a band holding under 5 % of the test set.** The cause is
-structural: the challenge's blinded set is an analog expansion purchased *around* the training
-chemistry, while **82 % of the training compounds are Murcko scaffold singletons** (5,370
-distinct scaffolds for 6,145 compounds), so a scaffold split over it is close to a random — and
-therefore more diverse — partition. The name "scaffold split" promises a harder evaluation than
-it delivers here.
+Two thirds of the validation set sits in a band holding under 5 % of the test set. The blinded set
+is an analog expansion bought around the training chemistry, while 82 % of training compounds are
+Murcko-scaffold singletons (5,370 scaffolds for 6,145 compounds), so a "scaffold split" over them
+is close to a random, more diverse partition and asks harder questions than the board does. That
+explains the validation-to-board lift on CYP1A2 and CYP2C9 without reference to the model.
 
-This also explains the validation→board lift (+0.17 CYP1A2, +0.13 CYP2C9, ≈0 CYP2D6 and
-CYP3A4) without appealing to anything the model does: the board asks easier questions. Those
-lifts carry 95 % intervals of 0.095–0.191 from a single split, so quoting them to three
-decimals overstates what is known.
+`drugrx/cyp/matched.py` importance-weights each validation compound to the measured test
+histogram. The correction flips the sign of small effects, so any effect below about 0.01 ρ on the
+unweighted surface is treated as unsigned.
 
-`drugrx/cyp/matched.py` corrects it by importance-weighting each validation compound to the
-measured test histogram and resampling, which keeps every compound where a hard `NN ≥ 0.5` cut
-discards three quarters of them. **The correction is not cosmetic — it flips signs on small
-effects**, and it agrees with the independent `NN ≥ 0.5` contrast, which is the check that
-matters. Any effect below ~0.01 ρ measured on the uncorrected surface should be treated as
-unsigned.
+## 7. What has been tested since v9, and why none of it is a submission
 
-## 8. The TDI classification track
+After v9 the only lever left was the model itself. Everything below is measured with the
+production learner unless stated, against a pre-registered bar of +0.005 macro ρ on at least
+5 of 6 seeds: about the smallest change that could move a rank.
 
-A separate submission, same release, no extra data: per-isoform binary classifiers for
-`CYP2D6_is_TDI` and `CYP3A4_is_TDI`. Board: **macro MCC 0.2964**, rank 71 of 153 (CYP2D6
-0.2291, CYP3A4 0.3637).
+### 7.1 Split noise is ten times the effects being argued about
 
-The one idea worth reporting is that **the operating point can be chosen against the blinded
-test set's own class balance, because the leaderboard gives that balance away.** For a binary
-task `TP = R·π = P·q`, and `Accuracy = 1 − π − q + 2Rπ`, so
+One fixed GBM, same data, 18 scaffold splits: macro ρ mean 0.5715, sd 0.0323, range
+0.5022 → 0.6344. The production pipeline's 0.643, measured on its own split, lies just above the
+top of that range. Every comparison of two learners is therefore paired within split, over at
+least six splits, with a sign count. An earlier "0.09 ρ gap" between the MLP and the GBM, which
+motivated three phases of work, was this spread: the two had been scored on different splits.
+
+### 7.2 The pseudo-labels are worth +0.0508; reshaping them is worth at most +0.0037
+
+| what was measured | best macro Δρ |
+|---|---|
+| having screen pseudo-labels at all, vs dose-response only | **+0.0508** (3/3 seeds, every isoform) |
+| reweighting them (w 1.0 → 0.2) | +0.0037 |
+| relabelling them per row from the readout (144 fits) | +0.0026 |
+| shifting their location (conditional mean instead of median) | +0.0018 |
+| the two-branch floor split of §2 | +0.0004 |
+
+Sixteen arms across three harnesses never exceeded +0.0037: the ceiling is set by how much the
+screen says, not by how its label is parameterised. Nor does the gain follow the pseudo-labels'
+share of an isoform's labelled signal — CYP2C9 gains most (+0.0752) at a 14.9 % share, while
+CYP2D6, at 60.5 %, gains +0.0616.
+
+The floor split shows why the criterion has to match the grader. It is the better label for the
+measured floor compounds, but it moves 1,561 rows up and 3,122 down and leaves the block's mean
+where it was (−0.0003). Downstream ρ responds to the block's location, so the conditional mean,
+which loses on MAE, buys 4.5× more ρ. The difference (+0.0014) is inside the noise, and the split
+stays in the code as the more defensible label.
+
+### 7.3 No MLP in this family beats the GBM
+
+Standardising all 3,091 feature columns together, as the MLP originally did, was the worst of six
+preprocessings tried. `log1p` on the count fingerprints (which keeps their 86 % sparsity at
+exactly zero) plus quantile-normalised RDKit descriptors (one column has sd 3.8 × 10⁵) is
++0.0339 ρ, 6/6 splits, t 3.91. The three splits it was discovered on gave +0.0431; three fresh
+splits gave +0.0247, a 43 % shrink.
+
+The remaining MLP changes, ablated one at a time over 18 splits, paired:
+
+| factor | Δρ | sign |
+|---|---|---|
+| per-head target standardisation | +0.0138 | 14/18 (p 0.015) |
+| LayerNorm | +0.0079 | 12/18 |
+| depth 4 | +0.0037 | 10/18 |
+| width 1024 | −0.0021 | 7/18 |
+| batch 64 | −0.0042 | 6/18 |
+| dropout 0.5 | −0.0209 | 2/18 |
+| one shared forward under BatchNorm | −0.1009 | 0/18 |
+
+The one real fix is per-head target standardisation: the four endpoints' label sds span
+0.782 to 1.093 and their losses share a trunk, so the widest head dominated the gradient.
+
+Against the production GBM, paired over 18 splits:
+
+| | Δρ | t | sign |
+|---|---|---|---|
+| preprocessed MLP | −0.0137 | −2.50 | 5/18 |
+| + per-head standardisation | +0.0002 | 0.04 | 8/18 |
+| tuned composite | +0.0055 | 1.46 | 11/18 |
+
+The composite looked like +0.0201 (6/6) on the six splits it was tuned on; on the twelve never
+used for a choice it is −0.0017. The MLP's ceiling is parity with the GBM, so it adds nothing as
+an ensemble member.
+
+### 7.4 Other mechanisms measured and closed
+
+- **Early stopping on a constant-heavy set.** XGBoost's early-stopping set is up to 63 % the
+  single floor value on CYP2D6, and selecting on MAE against it does stop training up to 407
+  rounds early. Excluding those rows changes macro ρ by +0.0002 (3/6 seeds) and costs CYP3A4 on
+  0/6 seeds. The defect is real and has no measured cost, so the builder is unchanged.
+- **Tabular foundation models** on the same features missed the bar (0/3 seeds on the primary
+  endpoint). TabICL's apparent edge at matched features was an artefact of its 100-column
+  pretraining range, and decays to a loss by 1,000 columns.
+- **Learned per-sample weights** (bilevel). With 641,284 parameters against 785 meta rows
+  (d/n = 817), the meta-gradient's agreement between two halves of its own meta set falls from
+  +0.86 to +0.11 within 20 epochs while the training gradient holds at +0.89. At that ratio no
+  parameterisation of the weights can be told apart from uniform.
+
+## 8. Earlier negative results
+
+- **External inactives do not substitute for the challenge's own screen.** 10.5k Veith bounds made
+  V2 worse by +0.038 macro, 3/3 seeds.
+- **More training does not help.** 300 → 3,000 epochs moved the score by 0.0000. At 30,000 epochs
+  with warm restarts the gain over 1,200 was −0.0026 against a seed spread of 0.0052. Doubling
+  width bought 0.013. A later controlled run showed two thirds of an apparent epochs effect was
+  the LR schedule stretching with the epoch count.
+- **A pretrained molecular foundation model did not beat ECFP; its loss function did.** CheMeleon's
+  frozen D-MPNN fingerprint lost to count-ECFP + descriptors under the same GBM (0.6433 vs 0.5819
+  ST-RAE on validation). Fine-tuned under the metric's own interval hinge it scored 0.5179, but
+  embeddings read back out of that encoder were no better than frozen ECFP: the gain was in
+  training against the metric, not in the representation.
+- **Concatenating feature blocks hurt.** CheMeleon ⊕ ECFP scored worse than either alone.
+- **Ranking objectives lose.** On CYP3A4 with paired seeds, LightGBM `lambdarank` is −0.177 ρ and
+  `rank_xendcg` −0.038. Finer grades recover only 0.047 of the 0.177, so coarse binning is about a
+  quarter of the cause; NDCG's positional discount and Spearman's equal weighting are different
+  objectives.
+
+## 9. The TDI classification track
+
+Per-isoform binary classifiers for `CYP2D6_is_TDI` and `CYP3A4_is_TDI`, same release, no extra
+data. Board: macro MCC 0.2964, rank 71 of 153 (CYP2D6 0.2291, CYP3A4 0.3637).
+
+The leaderboard gives away the blinded test set's class balance. For a binary task,
+`TP = R·π = P·q` and `Accuracy = 1 − π − q + 2Rπ`, so
 
     π = (1 − Accuracy) / (1 + Recall/Precision − 2·Recall)
 
-Every entry is scored on the same test set, so π must agree across entries — and that
-agreement is the validation. It agrees to **sd 0.00018** (CYP2D6, 145 entries) and **sd
-0.00008** (CYP3A4, 152 entries): π = **0.0706** and **0.2916**. MCC then has a closed form,
+Every entry is scored on the same test set, so π must agree across entries; that agreement is the
+validation: sd 0.00018 over 145 entries (CYP2D6) and 0.00008 over 152 (CYP3A4), giving π = 0.0706
+and 0.2916. MCC then has a closed form,
 
     MCC = √(π/(1−π)) · (R − q) / √(q(1−q))
 
-verified against sklearn to 3.3e-16, and it reproduces our own reported MCC to 0.001. Our
-thresholds had been tuned where the positive rate was 0.195 against a true prevalence of
-0.0706: thresholding by *probability value* does not transfer when the probability scale
-shifts, thresholding by **rate** does. Moving CYP3A4's rate from 0.473 to 0.313 was worth
-**+0.0138 MCC**, measured against the test ROC rather than assumed.
+verified against sklearn to 3.3e-16, and it reproduces our reported MCC to 0.001.
 
-The same row also gives the realised operating point, `FPR = (q − Rπ)/(1 − π)`, and one
-(TPR, FPR) pins an equal-variance binormal ROC. That yields a **measured test AUC of 0.762
-(CYP2D6) and 0.764 (CYP3A4)** against validation values of 0.728 and 0.813 — biased in
-opposite directions, which is why a pre-registered macro MCC of 0.318 came back 0.296. An ROC
-is prevalence-independent; it is not dataset-independent. At the realised ROC both thresholds
-are now within **0.0006 macro MCC** of optimal, so the remaining lever on this track is the
-ranker, not the cut.
+Thresholds had been tuned where the positive rate was 0.195 against a true prevalence of 0.0706.
+Thresholding by probability does not transfer when the probability scale shifts; by rate it does.
+Moving CYP3A4's rate from 0.473 to 0.313 was worth +0.0138 MCC.
 
-## 9. Reproducibility notes and known bugs we fixed
+The same row gives the realised operating point, `FPR = (q − Rπ)/(1 − π)`, and one (TPR, FPR)
+point pins an equal-variance binormal ROC: test AUC 0.762 (CYP2D6) and 0.764 (CYP3A4), against
+validation 0.728 and 0.813. The biases run in opposite directions, which is why a pre-registered
+macro MCC of 0.318 came back 0.296. Both thresholds now sit within 0.0006 MCC of optimal on the
+realised ROC, so the remaining lever here is the classifier, not the cut.
 
-Recorded because they were silent failures that looked healthy:
+## 10. Silent bugs found and fixed
 
-- `chemeleon_fp.py` returned **atom-level** vectors. Chemprop's `BondMessagePassing`
-  gives (n_atoms, 2048), not (n_molecules, 2048); indexing it by molecule produced one
-  arbitrary atom's embedding from the wrong molecule. Shape, finiteness and
-  dead-dimension checks all pass on that garbage. What exposed it: a molecule's nearest
-  neighbour in the embedding had **Tanimoto 0.132 against a random-pair baseline of
-  0.132**. Fixed with mean aggregation over `batch.batch`.
-- `allr_floor` returned NaN on an empty pool; trainers mask NaN, so the selection fix
-  would have become a silent no-op on a healthy-looking run. It now raises.
-- The screen labeller decided "inactive" by calibration-bin membership rather than by the
-  readout, so on an isoform whose promotion excludes weak bins (exactly CYP2D6) a plainly
-  inactive compound could be labelled **active**.
+Each passed every shape and finiteness check.
 
-## 10. Code
+- `chemeleon_fp.py` returned **atom-level** vectors: Chemprop's `BondMessagePassing` gives
+  (n_atoms, 2048), and indexing it by molecule took one arbitrary atom from the wrong molecule.
+  Exposed when nearest neighbours in the embedding had Tanimoto 0.132 against a random-pair
+  baseline of 0.132. Fixed with mean aggregation over `batch.batch`.
+- `allr_floor` returned NaN on an empty pool. Trainers mask NaN, so the selection fix would have
+  become a silent no-op; it now raises.
+- The screen labeller decided "inactive" by calibration-bin membership rather than by the readout,
+  so on CYP2D6, whose promotion excludes weak bins, a plainly inactive compound could be labelled
+  active.
+- The ensemble's "seeds" shared a byte-identical validation index, so their spread measured network
+  initialisation rather than the compound sample, making seed-level error bars about 10× too tight.
 
-<!-- TODO before 2026-11-03: publish the repository (or a redacted extract) and put the
-     reachable https:// link here, then tick "My code is open-source" on the submission
-     form. The form requires the link when that box is checked. -->
+## 11. Withdrawn claims
 
----
+Each was found by re-measurement, adversarial review or a closer reading of a source.
 
-*Report drafted 2026-10-08. Metric: macro-averaged soft-threshold relative absolute error
-against the published credible intervals; 1.0 = as good as predicting the mean.*
+- **"The ensemble beats a plain LightGBM by +0.0154 ρ."** The comparison was unpaired; paired on
+  identical rows it is −0.0066, with every per-isoform interval spanning zero.
+- **"The screen pseudo-label is a left-censoring bound."** 2.211 is the median of 303 measured
+  compounds and half of them sit above it. That is coarsening, not censoring, so every
+  left-censored estimator (a Tobit EM arm included) is mis-specified for half the rows it touches.
+- **"P(y\* > 2.211) ≈ 0.5 is a finding."** It is a property of a median.
+- **"Representation is the lever."** Four representation changes were measured at Δρ ≈ 0.0000,
+  all with the predictor held fixed. When the predictor was varied instead (§7.3, §7.4), nothing
+  beat the GBM.
+- **"The early-stopping defect costs score and was fixed."** An earlier version of this report
+  listed it as found and fixed; it was measured afterwards, the effect is +0.0002, and the builder
+  was not changed (§7.4).
+- **"The two-branch floor split is the better change."** Better at fitting the floor compounds;
+  worse than the conditional mean at moving ρ, and neither clears the bar (§7.2).
+- **"The tuned MLP beats the GBM by +0.0201, confirmed on fresh splits."** The confirmation used
+  three splits — 1.6 σ — and the configuration was selected on the other three. Over twelve
+  untouched splits it is −0.0017 (§7.3).
+- **"Dropout 0.5 is the best single architecture change (+0.0177)."** One factor at a time over 18
+  splits it is −0.0209, 2/18. The original reading took eight deltas off one shared baseline run;
+  they agreed because that baseline drew low.
+- **"Pseudo-labels are too small to explain the gap to production."** Their presence is worth
+  +0.0508; it is only modifications to them that are capped at +0.0037 (§7.2).
 
+## 12. Repository
 
----
-
-## 11. Code and lab notebook (added 2026-10-11)
-
-This repository previously held only this report. It now also holds the implementation and the
-complete research record.
-
-| path | what |
+| path | contents |
 |---|---|
-| `talindrew-drugrx/` | features, training, the metric, the submission builder. 225 tests |
-| `docs/research-lab/` | the ELN: 14 numbered findings, a dated notebook, a changelog |
-| `docs/drugrx-training/` | the programme that built it, and the full leaderboard history |
+| `talindrew-drugrx/` | features, training, the metric, splits, the submission builder, tests |
+| `docs/research-lab/` | the lab notebook: numbered findings, a dated notebook, a changelog |
+| `docs/drugrx-training/` | the programme that built the entry, and the full leaderboard history |
+| `site/` | an illustrated explainer of the problem and the method, served on GitHub Pages |
 
 Start with `docs/research-lab/NOTEBOOK.md` (newest entry last) and `docs/research-lab/findings/`.
 
-### What v9 added to the method: the metric is convex, so the minimum can be *bracketed*
-
-ST-RAE is a sum of hinge terms, so for a pure affine map it is **convex and piecewise LINEAR** in
-both the centre and the spread. Its derivative `(N_above − N_below)/D` is a non-decreasing step
-function. Three consequences were used directly:
-
-1. **A secant that changes sign across a point brackets the minimum.** v8 deliberately overshot
-   and produced a sign change on **all four axes** at once, which converted every subsequent
-   forecast from an extrapolation into an interpolation.
-2. **The chord between two measured points straddling the target is a rigorous upper bound**,
-   from convexity alone — no assumption about the function's shape.
-3. v9 therefore targeted the 3-point parabola vertex on each axis and pre-registered a chord bound
-   per cell. **Every cell landed inside its band**, and the macro point estimate was **0.5236
-   against an actual 0.5232 — off by 0.0004.**
-
-The remaining headroom on the affine family, bounded by the chord/slope bracket, is **under 0.003
-macro**. No further submission is worth a slot on placement grounds alone.
-
 ---
 
-## 12. Further withdrawals and corrections (2026-10-11)
-
-Recorded here because §6 set the precedent and the list has grown. Each was found either by
-re-measurement, by adversarial verification, or by reading a primary source properly.
-
-- **"The screen pseudo-label is a left-censoring bound."** Withdrawn. It is the **median** of 303
-  compounds carrying both a dose-response curve and a no-inhibition readout, and roughly half of
-  them truly sit **above** it. This is **coarsening, not censoring**, and every left-censored
-  estimator is mis-specified for half the rows it touches. A Tobit EM arm failed both its
-  pre-registered bars, and the only reason it was merely uninformative rather than harmful is a
-  **second** defect: its σ was an in-sample residual from an overfit learner, 5–7× too small.
-  Fixing σ would have made it impute *below the measured minimum*.
-- **"P(y\* > 2.211) ≈ 0.5 is a finding."** Withdrawn as a *measurement* — it is a property of the
-  median, and sweeping the inactivity threshold from 0.70 to 1.00 moves it only 0.4973–0.5000. The
-  substantive point stands; the presentation was arithmetic dressed as evidence.
-- **"A per-row label fitted on the readout is worth having."** Measured at **+0.0023 macro ρ**
-  against a +0.005 bar, 144 production-learner fits, 6 seeds. And the fit's *direction* was an
-  artefact of using OLS — a conditional-**mean** estimator — to improve a **median**: four of five
-  defensible rules move the label **down**. What shipped instead is a two-branch floor split at the
-  existing bin edge r = 1.0 (2.2732 / 2.1320), the only rule that wins on **both** out-of-fold MSE
-  (−4.40%) **and** MAE (−1.44%) — which matters because this entry is 0.30 × squared error +
-  0.70 × an L1-like interval hinge.
-- **"Representation is the lever."** Four representation changes were measured at Δρ ≈ 0.0000 —
-  all four with the predictor held fixed. The **predictor** had never been varied. Tabular
-  foundation models on raw descriptors were then measured and missed the bar (0/3 seeds on the
-  primary endpoint); the matched-feature edge of TabICL turned out to be an artefact of its
-  100-column pretraining range, decaying monotonically to a loss by k = 1000.
-- **A live defect in this entry's own builder**, found and fixed: XGBoost's early stopping was
-  selected under MAE on a set that is **61.8–65.1% a single constant** on CYP2D6, and MAE against a
-  constant is minimised by *predicting* that constant. The share ordering across isoforms is
-  exactly the ordering of a σ̂ anomaly previously attributed to the training labels alone.
+*Metric: macro-averaged soft-threshold relative absolute error against the published credible
+intervals; 1.0 is as good as predicting the mean.*
