@@ -18,7 +18,7 @@ Regression track, v9 (submitted 2026-10-11 12:36 UTC):
 
 | | ST-RAE | rank |
 |---|---|---|
-| **Overall (macro)** | **0.5232** | **59 / 273** |
+| **Overall (macro)** | **0.5232** | **54 / 244** |
 | CYP1A2 | 0.5369 | 57 |
 | CYP2C9 | 0.4555 | 92 |
 | CYP2D6 | 0.5493 | 25 |
@@ -35,7 +35,7 @@ Every regression submission, macro ST-RAE (lower is better):
 | v5, v6 | spread axis only | 0.5554, 0.5414 | —, 59 / 268 |
 | v7 | centre axis | 0.5256 | 54 / 271 |
 | v8 | deliberate overshoot on all axes | 0.5520 | 69 |
-| v9 | parabola vertex inside the bracket v8 measured | **0.5232** | 59 / 273 |
+| v9 | parabola vertex inside the bracket v8 measured | **0.5232** | 54 / 244 |
 
 v4 through v9 change only the placement map, which is monotone, so ρ and τ are 0.7093 / 0.5285
 on every one of them: an end-to-end check that each map changed placement and nothing else.
