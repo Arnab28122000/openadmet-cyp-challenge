@@ -143,9 +143,13 @@ sharing no assumptions agree: v4 placed every isoform too narrow.
 
 ### 4.3 One axis per submission
 
-ST-RAE on 750 fixed compounds is deterministic, so the difference between two board rows is a
-measurement with no sampling noise. Moving one axis per submission makes the leaderboard an
-instrument for the metric's derivative along that axis. v5 and v6 moved spread only; v7 moved the
+The live board does not score all 750 test compounds. Per the organisers it scores about half of
+them, split by chemically similar series (about 37–38 series; the other half is held back for the
+final board), and each published column is a mean over 1,000 bootstrap resamples. Both the half
+and the resampling are fixed, so the board is deterministic: the difference between two rows is a
+measurement with no sampling noise, but only for the live half. Moving one axis per submission
+makes the leaderboard an instrument for the metric's derivative along that axis on that half. The
+moments recovered in §4.2 describe the same half. v5 and v6 moved spread only; v7 moved the
 centre.
 
 | isoform | sd v4 → v5 → v6 | ST-RAE | secant v4→v5 | secant v5→v6 |
@@ -182,7 +186,10 @@ as its upper bound:
 | macro | point 0.5236, ≤ 0.5270 | 0.5232 |
 
 Every cell landed inside its band, and the macro point estimate was off by 0.0004. The chord/slope
-bracket puts the remaining headroom on the affine family under 0.003 macro.
+bracket puts the remaining headroom on the affine family under 0.003 macro on the live half. How
+well a placement fitted to those series transfers to the held-back series is not measured; eight
+parameters fitted over six submissions is the most conservative form a board probe can take, but
+the final board will include series these parameters never saw.
 
 v9 also caught a defect before it shipped: four decimals collapsed 10–20 distinct predictions per
 column into ties, and six decimals still tied one CYP1A2 pair. Submissions are written at seven, the first
@@ -395,6 +402,9 @@ Each was found by re-measurement, adversarial review or a closer reading of a so
 - **"Dropout 0.5 is the best single architecture change (+0.0177)."** One factor at a time over 18
   splits it is −0.0209, 2/18. The original reading took eight deltas off one shared baseline run;
   they agreed because that baseline drew low.
+- **"ST-RAE on 750 fixed compounds is deterministic."** The live board scores about half the test
+  set (about 37–38 series) as a bootstrap mean. The placement measurements stand, but they hold for
+  that half, not for the final board (§4.3, §4.4).
 - **"Pseudo-labels are too small to explain the gap to production."** Their presence is worth
   +0.0508; it is only modifications to them that are capped at +0.0037 (§7.2).
 

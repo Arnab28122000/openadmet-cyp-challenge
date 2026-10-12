@@ -200,7 +200,7 @@
 </svg>
     <figcaption><b>One centre and one spread per isoform.</b> As you scroll, the raw predictions shift and widen toward the population’s scale (distributions illustrative). They stop short of its full width and a little above its centre, because ST-RAE does not want squared error’s optimum: it wants less spread and a centre above the mean, because an inactive compound’s interval is a free window reaching up to about 3.5. A board probe measured the spread discount at 0.896.</figcaption>
   </figure>
-  <p>ST-RAE on 750 fixed compounds is deterministic, so the difference between two board rows is a measurement with no sampling noise. Moving <b>one axis per submission</b> turns the leaderboard into a measurement of the metric’s slope along that axis. v5 and v6 moved the spread only; v7 moved the centre.</p>
+  <p>The live board scores about half of the 750 test compounds, split by chemically similar series, as a mean over a fixed set of bootstrap resamples. That makes it deterministic: the difference between two board rows is a measurement with no sampling noise, for that half. Moving <b>one axis per submission</b> turns the leaderboard into a measurement of the metric’s slope along that axis. Whether the result transfers to the held-back series is not measured. v5 and v6 moved the spread only; v7 moved the centre.</p>
   <div class="table-wrap">
   <table class="num-table">
     <caption>Spread axis, v4 → v5 → v6: slopes read off the board</caption>
