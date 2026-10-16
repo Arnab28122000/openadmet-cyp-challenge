@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A gate, not a model — the structure track of the OpenADMET CYP challenge</title>
+<meta name="description" content="The talindrew entry to the OpenADMET CYP structure track is the organisers' own Boltz-2 baseline with one pose repaired. It scored +0.0291 LDDT-PLI with no modelling, because PoseBusters is a gate and a sub-angstrom contact violation was zeroing a whole compound.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<script>document.documentElement.classList.replace('no-js','js')</script>
+</head>
+<body>
+<div class="progress" aria-hidden="true"><span></span></div>
+<a class="skip" href="#track">Skip to the explainer</a>
+
+<header class="hero">
+  <p class="kicker">OpenADMET CYP blind challenge · structure (pose) track · entry <span class="mono">talindrew</span></p>
+  <h1>A gate,<br>not a model</h1>
+  <p class="dek">This entry contains no model. It is the organisers' own published baseline with one pose repaired by a tenth of an ångström. It gained more than every pose-selection strategy in the literature clears, because the scorer is a gate: a pose that fails one geometry check is not degraded, it is zeroed.</p>
+  <dl class="hero-stats">
+    <div><dt>the baseline it was built from</dt><dd class="mono">0.3950</dd><dd class="sub">rank 15</dd></div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div><dt>LDDT-PLI, submission v2</dt><dd class="mono strong">0.4241</dd><dd class="sub">rank 9 at submission · 6 on 16 Oct</dd></div>
+  </dl>
+  <nav class="toc" aria-label="Chapters">
+    <ol>
+      <li><a href="#track">The track</a></li>
+      <li><a href="#gate">The gate</a></li>
+      <li><a href="#repair">The repair</a></li>
+      <li><a href="#audit">The audit</a></li>
+      <li><a href="#afterwards">What the board can't say</a></li>
+      <li><a href="#open">What we didn't do</a></li>
+    </ol>
+  </nav>
+</header>
+
+<main>
+
+<section id="track" class="chapter">
+  <p class="chap-no">01</p>
+  <h2>The track</h2>
+  <p>Predict the bound geometry of each blinded compound inside a cytochrome P450, and be scored on <b>LDDT-PLI</b> (how well the protein–ligand contacts are reproduced), <b>BiSyRMSD</b> and <b>LDDT-LP</b>. Thirty entries. The organisers publish a <span class="mono">boltz-2-baseline</span> row and, in their tutorial repository, the twenty finished Boltz-2 predictions that appear to underlie it.</p>
+  <p>Before scoring, every pose is passed through <b>PoseBusters</b> — a battery of 22 physical-plausibility checks in the <span class="mono">dock</span> configuration: bond lengths and angles, internal clashes, ring planarity, and minimum distances to the protein, to organic cofactors and to inorganic ones.</p>
+  <p class="pull">The whole result follows from one line of the scorer: <span class="mono">POSEBUSTERS_MAX_FAILURES = 0</span>.</p>
+</section>
+
+<section id="gate" class="chapter">
+  <p class="chap-no">02</p>
+  <h2>The gate, and a deficit of 0.079 Å</h2>
+  <p>A pose that fails <em>any</em> one of the 22 checks is <b>zeroed</b> before aggregation — LDDT-PLI 0, LDDT-LP 0, and BiSyRMSD replaced by a 20 Å penalty. Not down-weighted. Not degraded. Zeroed.</p>
+  <p>Of the organisers' twenty baseline poses, nineteen pass all 22 checks. One — <span class="mono">OCNT-2313429</span> — fails <span class="mono">minimum_distance_to_protein</span>: a ligand oxygen sits 2.3589 Å from a protein carbon, a <i>relative</i> distance of <b>0.7258</b> where <b>0.75</b> is required.</p>
+
+  <figure class="fig">
+    <svg class="reveal" viewBox="0 0 640 190" role="img" aria-labelledby="fig-gate-t fig-gate-d">
+      <title id="fig-gate-t">One failing check zeroes a whole compound</title>
+      <desc id="fig-gate-d">Twenty poses shown as bars. Nineteen pass all 22 PoseBusters checks and keep their score. One fails the minimum-distance-to-protein check by 0.079 angstroms and is zeroed entirely, contributing nothing to the aggregate.</desc>
+      <text class="lab strong" x="20" y="22">the organisers' 20 baseline poses</text>
+      <g>
+        <rect class="ci" x="20"  y="40" width="22" height="64" rx="3"/><rect class="ci" x="50"  y="48" width="22" height="56" rx="3"/>
+        <rect class="ci" x="80"  y="36" width="22" height="68" rx="3"/><rect class="ci" x="110" y="52" width="22" height="52" rx="3"/>
+        <rect class="ci" x="140" y="44" width="22" height="60" rx="3"/><rect class="ci" x="170" y="38" width="22" height="66" rx="3"/>
+        <rect class="ci" x="200" y="56" width="22" height="48" rx="3"/><rect class="ci" x="230" y="42" width="22" height="62" rx="3"/>
+        <rect class="ci" x="260" y="50" width="22" height="54" rx="3"/><rect class="ci" x="290" y="34" width="22" height="70" rx="3"/>
+        <rect class="ci" x="320" y="46" width="22" height="58" rx="3"/><rect class="ci" x="350" y="54" width="22" height="50" rx="3"/>
+        <rect class="ci" x="380" y="40" width="22" height="64" rx="3"/><rect class="ci" x="410" y="58" width="22" height="46" rx="3"/>
+        <rect class="ci" x="440" y="44" width="22" height="60" rx="3"/><rect class="ci" x="470" y="48" width="22" height="56" rx="3"/>
+        <rect class="ci" x="500" y="38" width="22" height="66" rx="3"/><rect class="ci" x="530" y="52" width="22" height="52" rx="3"/>
+        <rect class="ci" x="560" y="42" width="22" height="62" rx="3"/>
+      </g>
+      <g>
+        <rect class="m-err" x="590" y="100" width="22" height="4" rx="2"/>
+        <line class="m-err" x1="601" x2="601" y1="60" y2="98"/>
+        <circle class="m-pred" cx="601" cy="56" r="4"/>
+      </g>
+      <line class="axis" x1="20" x2="620" y1="104" y2="104"/>
+      <text class="lab num" x="601" y="124" text-anchor="middle">zeroed</text>
+      <text class="lab" x="601" y="142" text-anchor="middle">OCNT-2313429</text>
+      <text class="lab" x="20" y="142">19 poses keep their score</text>
+      <text class="lab num readout" x="20" y="172">relative distance to protein <tspan class="strong">0.7258</tspan> against a floor of <tspan class="strong">0.75</tspan> — a deficit of <tspan class="strong">0.079 Å</tspan></text>
+    </svg>
+    <figcaption>One sub-ångström contact violation costs the entire compound, not the contact.</figcaption>
+  </figure>
+
+  <div class="aside">
+    <p><b>Two caveats this page depends on.</b></p>
+    <p>That the board's <span class="mono">boltz-2-baseline</span> row is those exact files is an <b>assumption we never verified</b>; our own entry is a <span class="mono">cif → pdb</span> conversion of them, and §05 turns up evidence that it may not hold.</p>
+    <p>And <b>one compound is not 1/20 of the published score.</b> The live board scores only the phase-1 subset of the test set, so on the board this page reports, one failure is worth roughly <b>10%</b> of the metric rather than 5%.</p>
+  </div>
+</section>
+
+<section id="repair" class="chapter">
+  <p class="chap-no">03</p>
+  <h2>The repair has to move the ligand less than the metric can see</h2>
+  <p>Two constraints pull against each other. The pose must clear a relative distance of 0.75, and it must stay inside LDDT's tolerance, whose smallest distance threshold is <b>0.5 Å</b> — move the ligand further than that and the repair costs more contacts than the zeroing did.</p>
+  <p>So: MMFF94 on the ligand alone, with bond orders taken from the challenge SMILES; every protein and heme heavy atom within 6 Å held <b>fixed</b>; a flat-bottom floor at 0.80 × the van der Waals sum on ligand–receptor pairs already close to it; and every ligand heavy atom tethered to its original Boltz-2 position at <i>k</i> kcal/mol/Å².</p>
+
+  <div class="table-wrap">
+  <table>
+    <caption>The tether stiffness trades margin against displacement</caption>
+    <thead><tr><th>tether <i>k</i></th><th>min relative distance</th><th>heavy-atom RMSD</th><th>max displacement</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">5</td><td class="mono">0.7824</td><td class="mono">0.307 Å</td><td class="mono">0.748 Å</td></tr>
+      <tr><td class="mono strong">20 (shipped)</td><td class="mono strong">0.7657</td><td class="mono strong">0.110 Å</td><td class="mono strong">0.305 Å</td></tr>
+      <tr><td class="mono">50</td><td class="mono">0.7538</td><td class="mono">0.071 Å</td><td class="mono">0.190 Å</td></tr>
+      <tr><td class="mono">200</td><td class="mono">0.7399 (fails)</td><td class="mono">0.024 Å</td><td class="mono">0.066 Å</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p><i>k</i> = 20 was chosen over the tighter <i>k</i> = 50 <b>not because it scores better</b> but because <i>k</i> = 50's margin is 0.004 in relative distance — a pass that would depend on rounding and on which PoseBusters version the scorer happens to run. At 0.110 Å RMSD the pose being scored is still Boltz-2's.</p>
+
+  <div class="aside">
+    <p><b>Provenance, because this report's standard is traceability.</b> Only the <i>k</i> = 20 row is a machine artifact. <span class="mono">TETHER_K = 20.0</span> is a hardcoded constant with no CLI override, so the other three rows record an exploratory sweep and are <b>not reproducible from the committed script</b>. They are shown because they are the reason for the choice, not as evidence.</p>
+  </div>
+</section>
+
+<section id="audit" class="chapter">
+  <p class="chap-no">04</p>
+  <h2>The audit: the risk was concentrated in one check</h2>
+  <p>Before submitting, every thresholded quantity PoseBusters reports was audited across all twenty poses. The margins are comfortable everywhere except one.</p>
+
+  <div class="table-wrap">
+  <table>
+    <caption>Worst observed margin per check, across the 20 baseline poses</caption>
+    <thead><tr><th>check</th><th>threshold</th><th>worst observed</th><th>margin</th></tr></thead>
+    <tbody>
+      <tr><td><b>relative distance to protein</b></td><td class="mono">≥ 0.75</td><td class="mono strong">0.7581</td><td class="mono strong">0.008</td></tr>
+      <tr><td>relative distance to organic cofactors</td><td class="mono">≥ 0.75</td><td class="mono">0.8320</td><td class="mono">0.082</td></tr>
+      <tr><td>relative distance to inorganic (heme Fe)</td><td class="mono">≥ 0.75</td><td class="mono">0.9852</td><td class="mono">0.235</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Three <em>passing</em> baseline poses sat within 0.025 of the protein-contact floor. The scorer's requirements file <b>does not pin a PoseBusters version</b> and we validated on 0.6.5 — so each of those three was a version bump away from costing ~10% of the metric. The same restrained minimisation was applied to all three: <span class="mono">OCNT-2395712</span> 0.7581 → 0.7745, <span class="mono">OCNT-2395503</span> 0.7721 → 0.7794, <span class="mono">OCNT-2312554</span> 0.7746 → 0.7855. That is submission v2: validator <span class="mono">(True, [])</span>, <b>PoseBusters 20/20</b>.</p>
+
+  <p class="pull">The honest cost of that fix, which a “the risk was in exactly one check” story would hide.</p>
+  <p>Because the floor term <b>skips iron</b>, nothing opposed the ligand drifting toward the heme, and the worst inorganic-cofactor relative distance fell <b>0.9852 → 0.9352</b>. It is the one check on which v2 is strictly worse than v1. The margin against 0.75 is still 0.185, so this was safe — but it was <b>unrestrained rather than controlled</b>, and a future version should add an explicit Fe term.</p>
+</section>
+
+<section id="afterwards" class="chapter">
+  <p class="chap-no">05</p>
+  <h2>What the board can and cannot tell us afterwards</h2>
+  <p><b>Registered before submitting:</b> a range, 0.3950 + 0.02–0.03 ≈ <b>0.41–0.42</b>, and a point prediction of <b>≈ 0.4158</b> — the baseline with the zeroed compound moved to the average of the other nineteen.</p>
+  <p><b>Measured: 0.4241.</b> Against the baseline row: <b>LDDT-PLI +0.0291</b>, <b>BiSyRMSD −1.3720 Å</b>, <b>LDDT-LP +0.0752</b>, and rank 15 → 9.</p>
+  <p>That is the whole of what is established. The per-compound decomposition <b>is not recoverable</b> from the published columns, and the attempt to recover it is instructive enough to record rather than quietly drop.</p>
+  <p>The obvious inversion — 0.3950 × 20 = 7.900 with one zero, so 0.4241 × 20 − 7.900 makes the repaired compound 0.582 — is <b>wrong, and refutable from the same two board rows</b>. Applied to the other two metrics it returns a pose with LDDT-LP <b>1.504</b> and BiSyRMSD <b>−7.44 Å</b>. Both lie outside their own definitions, so the premise fails by a factor rather than a rounding.</p>
+  <p>The denominator is the error: the live board scores the phase-1 subset, and each column is a mean over 1,000 bootstrap resamples of it rather than an exact mean. Admissibility across all three metrics bounds the scored set at <b>n ≤ 13</b>; at n = 10 the three agree that the repaired pose would be LDDT-PLI 0.291 against 0.4389 for the others.</p>
+  <p class="pull">On every admissible n, the rescued pose is a <em>below-average</em> pose. The gain is the difference between mediocre and zero — not a good pose being thrown away.</p>
+  <p>The flattering reading is an artifact of the wrong denominator. The registered 0.4158 point prediction rested on that same denominator, so it was mis-specified too: <b>it is not a prediction the measurement can be said to have beaten.</b> This section previously contained the 20-compound arithmetic as a finding. It was removed before publication by an adversarial check against the other two columns of our own board row — the same error this report retracts for the regression track, made again on a different track.</p>
+</section>
+
+<section id="open" class="chapter">
+  <p class="chap-no">06</p>
+  <h2>What was deliberately not done</h2>
+  <p><b>Regenerating poses for consensus selection was rejected</b> at submission time. A PXR entrant's published measurements put the noise floor on pose-selection strategies at +0.0138, with only cross-engine agreement (<b>+0.0381</b>) and contact consensus (+0.0220) clearing it. But the organisers' repository ships <span class="mono">model_0</span> only, so consensus means re-running the co-folding and discarding the one pose set whose board score we actually know. It could not have been validated either: <b>78.9% of CYP3A4 PDB entries fall inside Boltz-2's training set</b>, leaving five post-cutoff structures to measure a +0.02 effect on. Ranking by Boltz confidence is worse than random (−0.0417), and the baseline already <em>is</em> the top-confidence pose.</p>
+  <p><b>Coverage 1.0 is not evidence of anything.</b> <span class="mono">coverage</span> is set from <span class="mono">LDDT-PLI.notna()</span> <em>before</em> the PoseBusters zeroing is applied, so a failed pose still counts as covered — and the baseline row carries coverage 1.0 despite its failure. What establishes that the repair took is the score itself: had the pose still failed it would have been re-zeroed, and we would have scored ≈ 0.3950.</p>
+  <p><b>Open, and being measured now.</b> The cross-engine lever above is the one strategy whose published effect clears the noise floor, so it is currently under test with a second co-folding engine against the same twenty blinded ligands, under bars registered before the arm was launched. No result is claimed here: this page will carry the numbers when the arm has run all twenty ligands and its scorer has been independently audited.</p>
+  <p class="pull">+0.0291 LDDT-PLI over the baseline it was built from, with no modelling, by auditing a gate instead of a predictor.</p>
+  <p>The six-place move should be read knowing that ranks 9–14 span 0.4241 → 0.4014, and four entries sit inside 0.0046 of each other. The score gain clears the published noise floor; “six places” is mostly a property of a dense board.</p>
+</section>
+
+<section id="read" class="chapter coda">
+  <h2>The full method report</h2>
+  <p>This page covers the structure track. The complete method report — including the regression and TDI tracks, the selected-label defect that carries the regression entry, every negative result, the silent bugs, and the claims this entry has withdrawn — is in the repository.</p>
+  <p class="links">
+    <a class="btn ghost" href="index.html">The regression track explainer</a>
+    <a class="btn" href="https://github.com/Arnab28122000/openadmet-cyp-challenge#readme">The method report (README)</a>
+    <a class="btn ghost" href="https://github.com/Arnab28122000/openadmet-cyp-challenge">The repository on GitHub</a>
+  </p>
+</section>
+
+</main>
+<footer>
+  <p>Entry <span class="mono">talindrew</span> (Hugging Face <span class="mono">arnab2812</span>). The structure-track entry contains no trained model: it is the organisers' published Boltz-2 baseline with four poses minimised under restraint. Challenge release data only; no proprietary data. The bar chart in §02 is illustrative of the gate's mechanism — the per-pose heights are not scores; every number in the text is from the method report.</p>
+</footer>
+<script src="main.js" defer></script>
+</body>
+</html>
