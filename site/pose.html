@@ -155,7 +155,52 @@
   <h2>What was deliberately not done</h2>
   <p><b>Regenerating poses for consensus selection was rejected</b> at submission time. A PXR entrant's published measurements put the noise floor on pose-selection strategies at +0.0138, with only cross-engine agreement (<b>+0.0381</b>) and contact consensus (+0.0220) clearing it. But the organisers' repository ships <span class="mono">model_0</span> only, so consensus means re-running the co-folding and discarding the one pose set whose board score we actually know. It could not have been validated either: <b>78.9% of CYP3A4 PDB entries fall inside Boltz-2's training set</b>, leaving five post-cutoff structures to measure a +0.02 effect on. Ranking by Boltz confidence is worse than random (−0.0417), and the baseline already <em>is</em> the top-confidence pose.</p>
   <p><b>Coverage 1.0 is not evidence of anything.</b> <span class="mono">coverage</span> is set from <span class="mono">LDDT-PLI.notna()</span> <em>before</em> the PoseBusters zeroing is applied, so a failed pose still counts as covered — and the baseline row carries coverage 1.0 despite its failure. What establishes that the repair took is the score itself: had the pose still failed it would have been re-zeroed, and we would have scored ≈ 0.3950.</p>
-  <p><b>Open, and being measured now.</b> The cross-engine lever above is the one strategy whose published effect clears the noise floor, so it is currently under test with a second co-folding engine against the same twenty blinded ligands, under bars registered before the arm was launched. No result is claimed here: this page will carry the numbers when the arm has run all twenty ligands and its scorer has been independently audited.</p>
+  <p><b>So we measured it, and the answer is interesting in an awkward way.</b> The cross-engine lever is the one strategy whose published effect clears the noise floor, so it was put under test with a second co-folding engine (Chai-1) against the same twenty blinded ligands, under three bars registered before the arm was launched. All twenty ligands ran. <b>All three bars passed. None of them is informative</b>, and each failure mode was found by auditing the arm's own scorer against the arm's own data.</p>
+
+  <div class="table-wrap">
+  <table>
+    <caption>Arm A2, all 20 blinded ligands &mdash; the registered verdict, and why it is not the result</caption>
+    <thead><tr><th>bar</th><th>registered</th><th>measured</th><th>why it does not mean that</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">C1</td><td>mean contact agreement &le; 0.75</td><td class="mono">0.3786</td>
+          <td>the ceiling is <b>above</b> what one engine scores against <em>itself</em> (0.5214), so the bar is satisfied by an engine compared with itself &mdash; it could not have failed</td></tr>
+      <tr><td class="mono">C2</td><td>&ge; 3 catastrophes of 20</td><td class="mono">7</td>
+          <td><b>0</b> at the contact radius the scorer actually uses; 4 under the engine's own confidence; 2&ndash;9 depending on which sample is called the pose</td></tr>
+      <tr><td class="mono">C3</td><td>IQR &ge; 0.15</td><td class="mono">0.1988</td>
+          <td>its bootstrap interval <b>[0.060, 0.236]</b> straddles the bar</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Two of those deserve naming, because both are mistakes that look like results. The catastrophe count was taken at a <b>4.5 Å</b> contact radius chosen by us; the challenge's scorer passes no radius and runs at OpenStructure's <b>6.0 Å</b> default, where the count is <b>zero</b>. And the reference pose was <span class="mono">pred.model_idx_0.cif</span> &mdash; which is Chai-1's <b>generation order, not its ranking</b>: it writes samples in a loop and never renames them by score. The baseline it was compared against <em>is</em> its engine's confidence-ranked best, so the comparison was each engine's best against the other's arbitrary draw, biased toward exactly the disagreement the bar was counting.</p>
+
+  <p class="pull">Re-ranking by the engine's own confidence does not rescue it either, and that is the sharper finding.</p>
+
+  <p>Chai-1's <span class="mono">aggregate_score</span> separates a ligand's five samples by <b>0.0002&ndash;0.0056</b>, while the agreement statistic moves <b>0.19&ndash;0.67</b> across those same five poses. There is no reliable ranking to re-rank by: the reference pose is <b>underdetermined</b>, not merely mis-chosen. More than half the across-ligand variation in the registered statistic is a draw rather than a ligand (ICC <b>0.441</b> for one sample, 0.798 for the five-sample mean).</p>
+
+  <h3>What did survive, and it is the part worth having</h3>
+
+  <p>The one comparison here that puts like against like is <b>paired within ligand</b>: how far Chai-1's pose sits from Boltz's, against how far Chai-1's own samples sit from each other. A contact-overlap score has no natural zero, so &ldquo;the engines agree only 0.38&rdquo; means nothing until you know that one engine resampled on identical input agrees with itself only 0.52.</p>
+
+  <div class="table-wrap">
+  <table>
+    <caption>The engine effect, as the arm accumulated ligands</caption>
+    <thead><tr><th>ligands</th><th>paired difference</th><th>ligands agreeing</th><th>sign test</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">11</td><td class="mono">+0.1416</td><td class="mono">10 / 11</td><td class="mono">0.0117</td></tr>
+      <tr><td class="mono">16</td><td class="mono">+0.1461</td><td class="mono">15 / 16</td><td class="mono">0.0005</td></tr>
+      <tr><td class="mono strong">20</td><td class="mono strong">+0.1428</td><td class="mono strong">19 / 20</td><td class="mono strong">4&times;10<sup>-5</sup></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>The effect size is <b>flat</b> while the evidence sharpens by three orders of magnitude &mdash; the signature of a real effect rather than a small-sample artifact. CI95 on the final difference is <b>[0.113, 0.174]</b>. So the two engines are genuinely <b>non-redundant</b>: the second one is not another draw from the first's pose distribution, and the lever has a real mechanism behind it.</p>
+
+  <p>But the size is <b>+0.14, not the +0.40</b> that the registered ceiling implied. And the lever's own arithmetic needed correcting in the same direction: its ceiling was written as <span class="mono">k &times; &Delta; / n</span>, which counts catastrophes over the twenty blinded ligands while dividing by the smaller subset that is actually scored &mdash; double-counting the subsetting, and 1.5&ndash;2&times; optimistic. It is <span class="mono">k &times; &Delta; / 20</span>, independent of <em>n</em>. The baseline's own 0.3950 on these same poses also bounds a flagged pose near 0.21&ndash;0.27 rather than 0.15, so &Delta; is about 0.19, not 0.30.</p>
+
+  <p class="pull">Registered expectation +0.0381. Defensible range after those corrections: <b>+0.005 to +0.035</b> &mdash; and this arm cannot separate the ends of that range.</p>
+
+  <p><b>The honest close.</b> The arm passes the preconditions it was written to test and the decision still does not follow from them. It has no ground truth on the blinded twenty, so it measures <em>disagreement</em> and infers <em>badness</em> &mdash; and disagreement between two engines is symmetric: it never says which one is wrong. Every additional ligand sharpens the count and adds nothing to that inference. The only instrument that can settle whether the lever pays is a head-to-head submission against a known score. That is a decision about submission slots, not about compute, and this page will say which way it went.</p>
   <p class="pull">+0.0291 LDDT-PLI over the baseline it was built from, with no modelling, by auditing a gate instead of a predictor.</p>
   <p>The six-place move should be read knowing that ranks 9–14 span 0.4241 → 0.4014, and four entries sit inside 0.0046 of each other. The score gain clears the published noise floor; “six places” is mostly a property of a dense board.</p>
 </section>
