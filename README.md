@@ -373,6 +373,49 @@ validation 0.728 and 0.813. The biases run in opposite directions, which is why 
 macro MCC of 0.318 came back 0.296. Both thresholds now sit within 0.0006 MCC of optimal on the
 realised ROC, so the remaining lever here is the classifier, not the cut.
 
+### 9.1 The seed-ensemble lever is already fully banked at three members
+
+A 24-hour window was registered on TDI as **variance reduction, not mechanism** — every mechanism
+here is closed by a trained arm — and the question was whether a *large* same-protocol seed
+ensemble beats the shipped three. **Pre-registered bar T1: ≥ +0.015 macro MCC on paired scaffold
+splits, sign positive on ≥ 8 of 10 seed-isoform pairs. T1 fails on both halves**, and on all
+fourteen pools measured. 32 members against the shipped 3 is **−0.0026 mean, positive on 6 of 10**;
+the best pool anywhere is +0.0087 at 6 of 10, 58% of the bar. The baseline reproduces the board
+row to three decimals (macro MCC **0.2961** against the board's **0.2964**), so the contrast is
+readable.
+
+The mechanism of the negative is the useful part, and the two quantities that are *not*
+threshold-mediated agree on it:
+
+| members | AUC | ΔAUC vs 1 | oracle-threshold MCC | Δ vs 1 |
+|---|---|---|---|---|
+| 1 | 0.7599 | — | 0.3277 | — |
+| 2 | 0.7643 | **+0.0044** | 0.3296 | +0.0019 |
+| **3 (shipped)** | 0.7649 | **+0.0049** | 0.3309 | +0.0032 |
+| 8 | 0.7643 | +0.0043 | 0.3300 | +0.0023 |
+| 32 | 0.7642 | +0.0043 | 0.3259 | −0.0018 |
+
+**Averaging acts entirely by the second member and is flat thereafter**: 1→3 buys +0.0049 AUC,
+3→32 buys −0.0006. The mirror statement is sharper — a *single* model is −0.0119 MCC against the
+shipped three on only 3 of 10 pairs — so the ensemble effect is real, worth about +0.005 AUC, and
+the shipped `--seeds 0 1 2` already banks it in full. The registration's premise, that a large
+pool is a lever the shipped config had not pulled, was simply false. **No future TDI arm should
+buy member count.**
+
+**T1 was also pitched against the wrong noise band, which is worth recording against our own
+method.** The bar was set above the ±0.010 one-seed band, but the shipped threshold rule adds
+noise of its own: per-pair sd of the registered delta is **0.0242** and the baseline's split-to-split
+sd is 0.033–0.037, so se(mean of 10) = **0.0076** and +0.015 is only **2.0 se** — a bar a genuine
++0.015 effect would clear about half the time. Visible in the raw numbers: on one pair a single
+model beats the shipped three by +0.0419, purely because the three-member median threshold landed
+at 0.083 instead of 0.106–0.128. A future bar on this metric needs ~0.03 per pair, or should be
+read on AUC, where the noise is an order of magnitude smaller.
+
+The one feature with a previously consistent sign — cross-fitted predicted pIC50 — **does not
+replicate at its recorded size**: on a clean same-count contrast it is CYP3A4 ΔAUC +0.0026 on 4/5
+(against +0.0049 on 5/5 as recorded) with ΔMCC −0.0025 on 1/5, and CYP2D6 ΔAUC −0.0014 on 2/5. It
+is not a submittable member. **The TDI row stands unchanged and no slot was spent.**
+
 ## 10. The structure (pose) prediction track
 
 **Board: LDDT-PLI 0.4241, rank 9 of 30** (BiSyRMSD 3.8148, LDDT-LP 0.8056, coverage 1.0;
