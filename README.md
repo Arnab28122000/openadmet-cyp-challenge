@@ -524,6 +524,80 @@ by auditing a gate instead of a predictor. The six-place move should be read wit
 that ranks 9–14 span 0.4241 → 0.4014 and four entries sit inside 0.0046 of each other — the score
 gain clears the noise floor, but "six places" is mostly a property of a dense board.
 
+### 10.6 The deep pool: the consensus lever, measured and declined
+
+§10.5 rejected consensus selection at submission time on cost and un-validatability. It has now
+been **run**, because the one lever left uncollected — majority-mode selection, published at
+**+0.0546** — is only collectable at a pool depth the first arm never reached. Its penalty for
+taking the wrong mode is **−0.151**, and a mode read off 20 samples cannot distinguish a real
+majority from a coin flip: 11/20 has a Wilson 95% lower bound of **0.342**, 70/100 gives 0.604.
+
+**What was run.** 24 L4-hours deepening the Boltz-2 pool from 20 samples per ligand to **60–90**,
+same engine, same `ccd: HEM`, same `--use_potentials`, same real MSA, one distinct seed per chunk
+(`seed = 1000 + chunk`). **154 chunks, zero failures.** The Chai-1 pool from the cross-engine arm
+is kept strictly as a **reference** and never as a pool member. A rule registered before the run
+takes a swap only if (1) the majority mode is *established*, Wilson lower bound > 0.5; (2) the
+control pose is **not already in that mode**; and (3) cross-engine agreement does not prefer the
+control.
+
+**Result: all four pre-registered bars passed, and one ligand of twenty changed.** The majority
+mode is established on **10 of 20** ligands at full depth, against a bar of ≥8 — and a projection
+made at depth 10 had predicted exactly 10. It did not matter, because *established* did not
+convert into *different*.
+
+| samples / ligand | majority established | same pose chosen as the full pool |
+|---|---|---|
+| 10 | 5/20 | **18/20** |
+| 20 | 5/20 | **18/20** |
+| 40 | 10/20 | **20/20** |
+| 60 | 9/20 | 20/20 |
+| 80 | 10/20 | 20/20 |
+
+**The third column is the result.** At ten samples per ligand the pool already selects the same
+pose as the full pool on 18 of 20 ligands; at forty, on all twenty. The pool **saturated at depth
+40**, so roughly two thirds of the GPU day changed no pose at all, and the deciding question was
+already answered by the 20 samples the first arm had. This is a negative result bought at full
+price, and it is published because the same lever sits uncollected in other entries' plans.
+
+**Why one swap and not the five projected.** The dominant decline reason is not an unclear
+majority — it is that **our shipped pose was already the majority mode**. `OCNT-2535422`: sixty
+poses, **one** mode. `OCNT-2312554`: 87 of 90. The organisers' `model_0`, which this entry is built
+from, is already where deep Boltz-2 sampling lands, so consensus selection had almost no error to
+correct. The gap between five projected and one realised is itself the finding.
+
+The swap is `OCNT-2395328` — 70 poses, 8 modes, majority 56, Wilson lower bound **0.692**, and
+**cross-engine agreement independently prefers the new pose** (0.465 vs the control's 0.394). That
+second selector has no fitted parameters and did not choose the pose; without its agreement the
+swap would not be taken. The other nineteen files ship **byte-identical** to the scored submission
+(verified by `cmp`), so a board read is a clean A/B on one ligand.
+
+**What this cannot establish.** There is **no oracle on the twenty blinded ligands**; nothing in
+our possession scores a candidate pose. A single changed ligand bounds the expected effect at
+`1 × Δ / 20` ≈ **+0.008** if the swap repairs a bad pose by the Δ ≈ 0.19 this track's own baseline
+implies — and the same magnitude negative if it does not, since contact disagreement is symmetric
+and never says which pose is wrong. The live board scores a subset, so the changed ligand may not
+be in it.
+
+**Two defects found by measuring rather than assuming.**
+
+1. **The chain convention was inverted.** Generated poses place the drug in chain B and the heme in
+   chain C, both named `LIG`; the set that scored 0.4241 is `HEM` in B and `LIG` in C. Invisible to
+   every statistic here (the heme is found by its iron, not its label) but wrong for submission on
+   exactly the ligands the rule changes. Swapped poses are now relabelled atom-for-atom, and the
+   swap is **revoked** rather than guessed when atom counts disagree.
+2. **The ledger outlived the data it described.** Ten ligands' first twenty samples were archived
+   under an earlier naming and died with the VM that made them, while the ledger still recorded
+   them complete — realised depth 60 where the ledger claimed 80. Depth is reported from surviving
+   pose files, counted, not from the ledger.
+
+**And the budget was 2.26× off, for an instructive reason.** The per-chunk rate this window was
+planned against had been measured on an **A100**; the window ran on an **L4**, at 729–777 s per
+ten-sample chunk against the 331 s assumed. A throughput number is a property of its hardware.
+It also made generation *order* load-bearing: a clock-terminated run that deepens one ligand at a
+time leaves half the set shallow, which would have failed the depth bar by queue position and made
+the table above unreadable, since its rows average across ligands. The order is breadth-first
+across ligands, so a stop at any instant leaves a readable rectangle.
+
 ## 11. Silent bugs found and fixed
 
 Each passed every shape and finiteness check.

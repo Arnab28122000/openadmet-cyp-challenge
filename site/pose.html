@@ -31,6 +31,7 @@
       <li><a href="#audit">The audit</a></li>
       <li><a href="#afterwards">What the board can't say</a></li>
       <li><a href="#open">What we didn't do</a></li>
+      <li><a href="#deep">The 24-hour answer</a></li>
     </ol>
   </nav>
 </header>
@@ -203,6 +204,43 @@
   <p><b>The honest close.</b> The arm passes the preconditions it was written to test and the decision still does not follow from them. It has no ground truth on the blinded twenty, so it measures <em>disagreement</em> and infers <em>badness</em> &mdash; and disagreement between two engines is symmetric: it never says which one is wrong. Every additional ligand sharpens the count and adds nothing to that inference. The only instrument that can settle whether the lever pays is a head-to-head submission against a known score. That is a decision about submission slots, not about compute, and this page will say which way it went.</p>
   <p class="pull">+0.0291 LDDT-PLI over the baseline it was built from, with no modelling, by auditing a gate instead of a predictor.</p>
   <p>The six-place move should be read knowing that ranks 9–14 span 0.4241 → 0.4014, and four entries sit inside 0.0046 of each other. The score gain clears the published noise floor; “six places” is mostly a property of a dense board.</p>
+</section>
+
+<section id="deep" class="chapter">
+  <p class="chap-no">07</p>
+  <h2>So we spent the GPU day, and the pool refuted the reason for spending it</h2>
+  <p>The section above ends by saying this page would record which way the consensus question went. It went <b>almost entirely nowhere</b>, and the measurement that says so is the one worth publishing.</p>
+  <p>The remaining uncollected lever was <b>majority-mode selection</b>, published at <b>+0.0546</b> — but it carries a <b>&minus;0.151</b> penalty when the mode taken turns out to be the minority, and a mode read off twenty samples cannot tell those two cases apart: 11/20 has a Wilson 95% lower bound of <b>0.342</b>. So the lever is only collectable at a depth the original arm never reached. Twenty-four L4-hours were spent deepening the Boltz-2 pool from 20 samples per ligand to <b>60&ndash;90</b>, same engine, same <span class="mono">ccd: HEM</span>, same <span class="mono">--use_potentials</span>, same real MSA, one distinct seed per chunk. <b>154 chunks, zero failures.</b> A rule registered in advance refuses the swap unless the majority is <em>established</em> (Wilson lower bound above 0.5), the control pose is <em>not already in that mode</em>, and cross-engine agreement does not prefer the control.</p>
+  <p class="pull">Every pre-registered bar passed. One ligand of twenty changed.</p>
+  <p>The majority mode is established on <b>10 of 20</b> ligands at full depth — the bar was &ge;8, and a projection made at depth 10 had predicted exactly 10. It did not matter, because <em>established</em> did not convert into <em>different</em>.</p>
+
+  <div class="table-wrap">
+  <table>
+    <caption>The depth ablation &mdash; what the twenty-four hours actually bought</caption>
+    <thead><tr><th>samples per ligand</th><th>majority established</th><th>same pose chosen as the full pool</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">10</td><td class="mono">5 / 20</td><td class="mono strong">18 / 20</td></tr>
+      <tr><td class="mono">20</td><td class="mono">5 / 20</td><td class="mono strong">18 / 20</td></tr>
+      <tr><td class="mono">40</td><td class="mono">10 / 20</td><td class="mono strong">20 / 20</td></tr>
+      <tr><td class="mono">60</td><td class="mono">9 / 20</td><td class="mono">20 / 20</td></tr>
+      <tr><td class="mono">80</td><td class="mono">10 / 20</td><td class="mono">20 / 20</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p><b>Read the third column, not the second.</b> At ten samples per ligand the pool already selects the same pose as the full pool on <b>18 of 20</b> ligands; at forty, on <b>all twenty</b>. The pool saturated at depth 40, which means roughly <b>two thirds of the GPU day changed no pose at all</b> — and the deciding question was already answered by the twenty samples the earlier arm had. The honest description of that spend is <em>a negative result bought at full price</em>. It is published here because the same lever is sitting uncollected in other entries' plans, and the depth table is the cheapest way to tell them not to bother.</p>
+
+  <h3>Why one swap and not five</h3>
+  <p>The dominant reason for declining is not that the majority was unclear. It is that <b>our shipped pose was already the majority mode</b>. On <span class="mono">OCNT-2535422</span>, sixty poses formed a <b>single</b> mode. On <span class="mono">OCNT-2312554</span>, 87 of 90. The organisers' <span class="mono">model_0</span>, which this entry is built from, is already where deep Boltz-2 sampling lands — so consensus selection had almost no error to correct. A pre-run projection expected five swaps; the pool delivered <b>one</b>, and the gap between those two numbers is the finding.</p>
+  <p>The one swap is <span class="mono">OCNT-2395328</span>: 70 poses, 8 modes, a majority of 56 with Wilson lower bound <b>0.692</b>, and <b>cross-engine agreement independently prefers the new pose</b> (0.465 against the control's 0.394). That second selector has no fitted parameters and did not choose the pose, which is the only reason the swap is taken at all. The other nineteen files are shipped <b>byte-identical</b> to the scored submission, verified by <span class="mono">cmp</span>, so a board read is a clean A/B on one ligand rather than a confounded comparison.</p>
+
+  <p><b>What this cannot tell us, stated plainly.</b> There is <b>no oracle on the twenty blinded ligands</b> — nothing in our possession can score a candidate pose. Every number above describes the pool and the rule; none of them prices the candidate. A single changed ligand bounds the expected effect at <span class="mono">1 &times; &Delta; / 20</span>, about <b>+0.008</b> if the swap repairs a bad pose by the &Delta; &asymp; 0.19 this track's own baseline implies — and the same size negative if it does not, because contact disagreement is symmetric and never says which pose is wrong. The live board also scores a subset, so the one changed ligand may not be in it.</p>
+
+  <h3>Two defects found by measuring rather than assuming</h3>
+  <p><b>The chain convention was inverted.</b> Our generated poses place the drug in chain B and the heme in chain C, both residues named <span class="mono">LIG</span>; the submission that scored 0.4241 is the opposite, <span class="mono">HEM</span> in B and <span class="mono">LIG</span> in C. Every statistic in the pipeline was unaffected — the heme is identified by its iron, not its label — but a swapped-in pose would have declared its cofactor where the scorer looks for the target ligand, on precisely the ligands the rule changes. The swap is now relabelled atom-for-atom and <b>revoked</b> rather than guessed if the two molecules' atom counts disagree.</p>
+  <p><b>The ledger outlived the data it described.</b> Ten ligands' first twenty samples were pushed under an earlier archive naming and were lost with the VM that made them, while the run ledger still recorded them as complete — so the realised depth was 60 where the ledger claimed 80. Depth is therefore reported from the <b>surviving pose files</b>, counted, not from the ledger that claims them.</p>
+  <p class="pull">A throughput number belongs to the hardware it was measured on. Reusing one across GPUs is how a 24-hour window gets pointed at 30 hours of work.</p>
+  <p>The budget itself came in 2.26&times; over: the per-chunk rate this window was planned against had been measured on an <b>A100</b> and the window ran on an <b>L4</b>, at 729&ndash;777 s per ten-sample chunk rather than 331 s. Caught by differencing consecutive ledger timestamps on the first fourteen rows. It also made the <em>generation order</em> load-bearing — a clock-terminated run that deepens one ligand at a time leaves half the set shallow, which would have failed the depth bar by queue position and made the table above unreadable. The order is now breadth-first across ligands, so a stop at any instant leaves the pool a readable rectangle.</p>
 </section>
 
 <section id="read" class="chapter coda">
