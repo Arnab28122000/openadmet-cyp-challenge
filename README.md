@@ -598,6 +598,27 @@ time leaves half the set shallow, which would have failed the depth bar by queue
 the table above unreadable, since its rows average across ligands. The order is breadth-first
 across ligands, so a stop at any instant leaves a readable rectangle.
 
+**The last check before the slot: the strain belonged to the ligand, not to the new pose.** The
+swapped pose carries the highest internal strain in the set — PoseBusters `energy_ratio` **2.31**,
+against 1.05–1.79 for the other nineteen — which is not gated by the `dock` config but describes
+precisely the pose being changed. Read alone it is not evidence: `energy_ratio` is the pose's UFF
+energy over the mean of a generated conformer ensemble, so it carries the ligand's own flexibility
+as well as the geometry, and this ligand is the most flexible of the twenty. Busted **paired, in one
+process**, the comparison inverts — the pose being *replaced* is the more strained of the two:
+
+| | candidate | the 0.4241 pose |
+|---|---|---|
+| `energy_ratio` | **2.3102** | **2.3885** |
+| `mol_pred_energy` | 112.43 | 116.24 |
+| `ensemble_avg_energy` | 48.667 | 48.667 (same ensemble) |
+| worst relative distance, protein | 0.7813 | 0.8279 |
+| worst relative distance, Fe | 1.8795 | 1.7931 |
+
+Both pass 22/22. The pairing was necessary rather than tidy: the same candidate measured 2.294 in
+one session and 2.310 in another, because the conformer ensemble is regenerated per process — a
+0.016 run-to-run drift on a statistic being read to three decimals. Only the within-run difference
+means anything, and it does not oppose the swap.
+
 ## 11. Silent bugs found and fixed
 
 Each passed every shape and finiteness check.

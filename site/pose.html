@@ -241,6 +241,17 @@
   <p><b>The ledger outlived the data it described.</b> Ten ligands' first twenty samples were pushed under an earlier archive naming and were lost with the VM that made them, while the run ledger still recorded them as complete — so the realised depth was 60 where the ledger claimed 80. Depth is therefore reported from the <b>surviving pose files</b>, counted, not from the ledger that claims them.</p>
   <p class="pull">A throughput number belongs to the hardware it was measured on. Reusing one across GPUs is how a 24-hour window gets pointed at 30 hours of work.</p>
   <p>The budget itself came in 2.26&times; over: the per-chunk rate this window was planned against had been measured on an <b>A100</b> and the window ran on an <b>L4</b>, at 729&ndash;777 s per ten-sample chunk rather than 331 s. Caught by differencing consecutive ledger timestamps on the first fourteen rows. It also made the <em>generation order</em> load-bearing — a clock-terminated run that deepens one ligand at a time leaves half the set shallow, which would have failed the depth bar by queue position and made the table above unreadable. The order is now breadth-first across ligands, so a stop at any instant leaves the pool a readable rectangle.</p>
+
+  <h3>The last check before the slot</h3>
+  <p>The swapped pose carries the <b>highest internal strain in the set</b> — PoseBusters <span class="mono">energy_ratio</span> <b>2.31</b> against 1.05&ndash;1.79 for the other nineteen. The <span class="mono">dock</span> config does not gate on it, so it cannot zero us; but it describes precisely the pose being changed, which makes it worth a look before spending a one-per-team slot. Read alone it is not evidence: the statistic is the pose's UFF energy over the mean of a <em>generated conformer ensemble</em>, so it carries the ligand's own flexibility as well as the geometry &mdash; and this is the most flexible ligand of the twenty. Busted <b>paired, in a single process</b>, the comparison inverts: the pose being <em>replaced</em> is the more strained of the two.</p>
+  <div class="table-wrap"><table><thead><tr><th>statistic</th><th>candidate</th><th>the 0.4241 pose</th></tr></thead><tbody>
+    <tr><td class="mono">energy_ratio</td><td><b>2.3102</b></td><td><b>2.3885</b></td></tr>
+    <tr><td class="mono">mol_pred_energy</td><td>112.43</td><td>116.24</td></tr>
+    <tr><td class="mono">ensemble_avg_energy</td><td>48.667</td><td>48.667</td></tr>
+    <tr><td>worst relative distance, protein</td><td>0.7813</td><td>0.8279</td></tr>
+    <tr><td>worst relative distance, Fe</td><td>1.8795</td><td>1.7931</td></tr>
+  </tbody></table></div>
+  <p>Both pass 22 of 22 checks. The pairing was necessary rather than tidy: the same candidate measured <b>2.294</b> in one session and <b>2.310</b> in another, because the conformer ensemble is regenerated per process. That is a 0.016 run-to-run drift on a number being read to three decimals, and it is exactly the size of difference an unpaired comparison would have been asked to resolve. Only the within-run difference means anything &mdash; and it does not oppose the swap.</p>
 </section>
 
 <section id="read" class="chapter coda">
