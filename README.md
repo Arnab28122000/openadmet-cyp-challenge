@@ -598,6 +598,24 @@ time leaves half the set shallow, which would have failed the depth bar by queue
 the table above unreadable, since its rows average across ligands. The order is breadth-first
 across ligands, so a stop at any instant leaves a readable rectangle.
 
+**The board's answer: the swap was worse, and the deep pool is a negative result end to end.**
+Submitted 2026-10-18 17:08 UTC and scored on the live board at **LDDT-PLI 0.4207 against the
+banked 0.4241** — −0.0034, rank 13 from 7. `LDDT-LP` moved the other way (0.8056 → 0.8090) and
+`BiSyRMSD` worsened (3.8148 → 3.8422), so the three columns do not agree; the scored column is
+LDDT-PLI, and it says the organisers' `model_0` pose was the better one. The entry has been rolled
+back to the banked bytes, which are byte-identical to what scored 0.4241 through a deterministic
+scorer.
+
+So the window's four passing bars and the board disagree, and the board is right. What the bars
+established was that a majority existed and was well separated (Wilson lower bound 0.692) and that
+a second, unfitted selector agreed with it. Neither of those is evidence that the majority mode is
+*closer to the crystal pose* — and with no oracle on the twenty blinded ligands, nothing in our
+possession could have told us. **Consensus among Boltz-2 samples measures where the model is
+confident, not where the ligand is.** That is the lever priced and closed: not "declined on cost"
+but *measured on the board and found negative*, which is the stronger form of the same conclusion.
+One ligand of twenty moved the metric by 0.0034, consistent with the ±0.008 the pre-registration
+predicted for a single swap.
+
 **The last check before the slot: the strain belonged to the ligand, not to the new pose.** The
 swapped pose carries the highest internal strain in the set — PoseBusters `energy_ratio` **2.31**,
 against 1.05–1.79 for the other nineteen — which is not gated by the `dock` config but describes
