@@ -345,6 +345,53 @@ an ensemble member.
   quarter of the cause; NDCG's positional discount and Spearman's equal weighting are different
   objectives.
 
+### 7.x The organisers' own CYP-pretrained encoder, as a third stack member
+
+The last untested member of the pretrained family: the organisers' Apache-2.0
+`openadmet/cyp1a2-cyp2d6-cyp3a4-cyp2c9-chemeleon-v1`, a 4-task CheMeleon-initialised D-MPNN
+trained on ChEMBL 37 pIC50 for our exact four isoforms, added as a **third member** beside the
+shipped two-member stack (inference only, no fine-tuning). **Pre-registered bar R1: macro Spearman
+ρ ≥ +0.010 on paired splits, sign positive on ≥ 4 of 5 seeds. Measured +0.0011, positive on 3 of 5
+— FAIL on both clauses**, worth **one board place** by the registration's own conversion.
+
+Three things make this a closure rather than a near miss.
+
+**The oracle is smaller than the honest fit.** Choosing the blend weight *with full knowledge of
+the rows it is scored on*, under production's own macro-ST-RAE objective, gives **w_probe = 0 on 4
+of 5 splits** and **+0.0003, positive on 1 of 5** — below the cross-fitted +0.0011. Across ten
+cross-fit halves the probe takes any weight in four, never above 0.10. So the miss cannot be
+blamed on weight fitting: there is no weight at which this member pays, even cheating.
+
+**Once calibration is equalised, a random projection of our own columns beats it.** The probe is
+better centred than the GBM member and far better than the net, so mis-centring is not why it was
+refused weight — but on a centred sensitivity over the same net vectors the probe falls to +0.0005
+(1/5) while the **shape-matched control rises to +0.0015, positive on 5 of 5, t = 3.70**. That is
+**void condition 2**: the gain is "another member", not the encoder. The companion number from the
+earlier 18-split test of this same checkpoint confirms the reading — its control gain collapses
+from +0.0134 there to **+0.0001** here, because production had already spent the generic
+second-member gain.
+
+**The reason is the ceiling, not the implementation.** The probe standalone is 0.050–0.094 ρ below
+the stack on every isoform (0.5491 vs 0.6231 macro) with residual correlation 0.825. The ceiling
+arm priced a member 0.03 below us at +0.0108; this one is outside that regime and its better
+decorrelation does not compensate.
+
+Four corrections to our own registration came out of it, all recorded: this checkpoint was **not**
+untested (it ran as S3 on 18 splits on 2026-10-13 and failed a void condition there — what was new
+is the *third-member* framing); an additive per-endpoint offset is **monotone and therefore cannot
+move a Spearman at all**, so only the blend weight was ever in play; the "7–12 board places"
+figure describes +0.0138–+0.0200, not the +0.005–0.014 the arm was costed at, which is worth **4**
+places at its centre; and R1 at n = 5 had only ~26% joint power at the pre-costed +0.009 — though
+with the realised effect 9× below the bar and the oracle capping the axis at +0.0003, more splits
+would not change the verdict.
+
+Leakage was re-verified independently and agrees: **0 of 750** blinded compounds by full InChIKey
+and 0 of 750 by 14-character skeleton; dropping the 83 overlapping training rows (1.35% of 6,145)
+moves the result by −0.0001. **Every deviation in the arm's protocol makes the base weaker or more
+optimistically scored, so this FAIL is conservative and transfers — a PASS would not have.** No
+slot was spent, and the pretrained-encoder family is now closed by measurement rather than by
+argument.
+
 ## 9. The TDI classification track
 
 Per-isoform binary classifiers for `CYP2D6_is_TDI` and `CYP3A4_is_TDI`, same release, no extra
