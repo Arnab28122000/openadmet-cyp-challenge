@@ -696,6 +696,11 @@ LDDT-PLI, and it says the organisers' `model_0` pose was the better one. The ent
 back to the banked bytes, which are byte-identical to what scored 0.4241 through a deterministic
 scorer.
 
+The rollback landed at 2026-10-19 05:15 UTC, on the first attempt the server-side 12 h
+cooldown allowed, and the restored row returned **all three columns identical** to the original:
+LDDT-PLI 0.4241, BiSyRMSD 3.8148, LDDT-LP 0.8056. So a re-read of unchanged bytes carries no
+scorer noise, and the A/B's −0.0034 is signal rather than scatter.
+
 So the window's four passing bars and the board disagree, and the board is right. What the bars
 established was that a majority existed and was well separated (Wilson lower bound 0.692) and that
 a second, unfitted selector agreed with it. Neither of those is evidence that the majority mode is
