@@ -32,6 +32,7 @@
       <li><a href="#afterwards">What the board can't say</a></li>
       <li><a href="#open">What we didn't do</a></li>
       <li><a href="#deep">The 24-hour answer</a></li>
+      <li><a href="#geometry">What the metric sees</a></li>
     </ol>
   </nav>
 </header>
@@ -257,6 +258,30 @@
   <p>Submitted 2026-10-18 17:08 UTC. It scored <b>LDDT-PLI 0.4207 against the banked 0.4241</b> &mdash; <b>&minus;0.0034</b>, rank 13 from 7 &mdash; and the entry was rolled back to the bytes that scored 0.4241. The rollback landed on the first attempt the 12&nbsp;h cooldown allowed, 2026-10-19 05:15&nbsp;UTC, and returned <b>all three columns identical</b> to the original row &mdash; 0.4241, 3.8148, 0.8056. A re-read of unchanged bytes therefore carries no scorer noise, which is what licenses reading the &minus;0.0034 as signal rather than scatter. The other two columns disagree with each other (<span class="mono">LDDT-LP</span> improved 0.8056 &rarr; 0.8090, <span class="mono">BiSyRMSD</span> worsened 3.8148 &rarr; 3.8422); the scored column is LDDT-PLI, and it says the organisers' <span class="mono">model_0</span> pose was the better of the two. The move is the size the pre-registration predicted for one ligand of twenty, <b>&plusmn;0.008</b>, with the sign it could not predict.</p>
   <p>So all four bars passed and the board still said no. The bars established that a majority existed, that it was well separated, and that an unfitted second selector agreed with it. None of that is evidence the majority mode is <em>nearer the crystal pose</em>, and with no oracle on the blinded twenty, nothing in our possession could have supplied it. <b>Consensus among samples measures where the model is confident, not where the ligand is.</b></p>
   <p class="pull">A lever measured on the board and found negative is a stronger result than the same lever declined on cost.</p>
+</section>
+
+<section id="geometry" class="chapter">
+  <h2>What the metric can and cannot see</h2>
+  <p>The next arm after the consensus failure was supposed to be chemistry rather than sampling. CYP3A4&rsquo;s site is built around a heme iron, and a <b>type&#8209;II</b> inhibitor binds by donating an sp<sup>2</sup> nitrogen lone pair into the iron&rsquo;s open sixth coordination site &mdash; a dative bond near 2.0&ndash;2.2&nbsp;&Aring;, far shorter than any contact. AutoDock Vina has <b>no metal term at all</b> (ketoconazole&rsquo;s imidazole docks 13.4&nbsp;&Aring; from the iron), so the hypothesis was that a co&#8209;folding model might inherit the same blindness: right pocket, wrong chemistry, and invisible to self&#8209;consensus because the error is chemical rather than statistical.</p>
+  <p>It is false here, and twenty text files were enough to show it. Across the twenty shipped poses the Fe&ndash;ligand distance is <b>strictly bimodal with an empty middle</b> &mdash; eleven ligands at 1.90&ndash;2.29&nbsp;&Aring;, nine beyond 3.5&nbsp;&Aring;, <b>none in between</b>. The model is not interpolating a distance; it is making a discrete chemical call. Crossed against substructure competence &mdash; an aromatic nitrogen bearing no hydrogen and no substituent, so pyridine, imidazole and triazole but explicitly not amide, sulfonamide, aniline or nitrile &mdash; the two agree on <b>nineteen of twenty with zero false positives</b>. It never coordinates a ligand that chemically cannot.</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>check on the eleven coordinated ligands</th><th>result</th></tr></thead>
+    <tbody>
+      <tr><td>Fe&ndash;N distance</td><td>1.899&ndash;2.290 &Aring;</td></tr>
+      <tr><td>tilt off the porphyrin normal</td><td>1.1&deg;&ndash;8.5&deg;, median 3.4&deg;</td></tr>
+      <tr><td>on the distal face, opposite the cysteine</td><td>11 / 11</td></tr>
+      <tr><td>Fe&ndash;SG(Cys442) proximal bond</td><td>2.28&ndash;2.39 &Aring;</td></tr>
+      <tr><td>four co&#8209;crystals for reference (2V0M, 3NXU, 4K9T, 4D6Z)</td><td>2.06&ndash;2.42 &Aring;, mean 2.20</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>The model lands <b>0.13&nbsp;&Aring; short of the crystal mean</b> against a smallest lDDT bin of 0.5&nbsp;&Aring;, and it picks the right nitrogen every time &mdash; imidazole N3, benzimidazole N3, 1,2,4&#8209;triazole N4, pyridine N1 &mdash; including choosing the <b>pyridine over the nitrile</b> in all three compounds that carry both.</p>
+  <p>Then the arm died a second time, for a better reason. The organisers score with OpenStructure&rsquo;s <span class="mono">LDDTPLIScorer</span> constructed with defaults, and OST&rsquo;s receptor is <em>&ldquo;protein and nucleic acid chains that pass the criteria for chain mapping&hellip; ignoring other ligands, waters, short polymers.&rdquo;</em> The heme is a single non&#8209;polymer residue. <b>It is ignored.</b> Every Fe&ndash;N contact contributes exactly zero: a textbook dative bond and a 13&nbsp;&Aring; miss score identically. So there was nothing to repair, <em>and</em> repairing it would have scored 0.000 &mdash; and the same sentence closes conserved water and the I&#8209;helix for free.</p>
+  <p class="pull">The cheapest place for a hypothesis to die is before it reaches a GPU. This one died twice, for the price of parsing twenty files.</p>
+  <h3>Where the error actually is</h3>
+  <p>The null bought a partition. Eleven ligands are <b>pinned</b> to the iron by a bond that fixes position and orientation together; nine are <b>unanchored</b>, floating 3.5&ndash;4.2&nbsp;&Aring; above the heme in a cavity of roughly 1,400&nbsp;&Aring;<sup>3</sup> whose defining property in the literature is promiscuity. If the score is a mean, the error should concentrate in the unanchored nine &mdash; which is also why self&#8209;consensus failed there: for a ligand held by nothing, the sampler has nothing to be right <em>about</em>, and the mode of its draws is an artefact of the sampling distribution rather than a signal.</p>
+  <p>Two further things the board itself says, rather than the model. The leader beats this entry by <b>+0.0634 while scoring <em>worse</em> on the receptor</b> (LDDT&#8209;LP 0.7739 against 0.8056), and across the top sixteen entries the correlation between the two columns is <b>&minus;0.048</b> &mdash; so the receptor half is not where the contest is, and ligand placement is the only axis that separates the field. And the live board scores roughly <b>ten compounds, not twenty</b>: this entry and the published baseline differ in exactly one compound, which forces <span class="mono">n &le; 13.3</span> by arithmetic alone. One compound moving 0.1 is therefore worth 0.010 on the board &mdash; which is the real reason small differences near the top of this track should not be read as skill.</p>
 </section>
 
 <section id="read" class="chapter coda">
