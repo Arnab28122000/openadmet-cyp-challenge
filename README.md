@@ -2,6 +2,9 @@
 
 **Entry:** `talindrew` (Hugging Face `arnab2812`). All three tracks: regression (direct
 inhibition), TDI (classification) and structure (pose).
+**Built by:** [Talindrew](https://www.talindrew.com), a browser-based molecular biology and drug
+discovery platform; these models are served in its
+[FoldRx pipeline](https://www.talindrew.com/product/foldrx-pipeline).
 **Data:** the challenge release only. No proprietary or external training data in the submitted
 models.
 **Report:** <https://github.com/Arnab28122000/openadmet-cyp-challenge>, attached to the TDI
