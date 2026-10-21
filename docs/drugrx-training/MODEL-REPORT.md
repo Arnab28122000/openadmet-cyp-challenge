@@ -212,8 +212,32 @@ against a 4,001-point grid on 600 random cases. Two consequences that cost real 
   paired seeds, LightGBM `lambdarank` is **−0.177 ρ** and `rank_xendcg` **−0.038**. We
   pre-registered binning as the suspected cost (the rankers need discrete grades) and then
   tested it: raising grades 16 → 128 recovers only 0.047 of lambdarank's 0.177, so **our own
-  explanation accounts for about a quarter of it**. The likelier cause is that NDCG's
-  positional discount and Spearman's equal weighting are simply different objectives.
+  explanation accounts for about a quarter of it**. We then guessed that NDCG's positional
+  discount was the residual cause — and a later arm **refuted our own explanation** by building
+  objectives in which that discount is absent by construction.
+- **The ranking family is closed by an arm that ran it, and our stated mechanism was wrong.**
+  Four differentiable objectives on continuous targets — a soft-Spearman surrogate, a
+  gap-weighted pairwise loss, pairwise logistic (RankNet) and a 24-bin ordinal head scored by
+  expectation — were trained through one harness at **18 splits × 5 seeds = 90 paired units
+  each**, with a shuffled-target null control. Held out (30 paired units), every one loses:
+  soft-Spearman **−0.0729 ρ** (t −17.6), gap-weighted **−0.0187**, RankNet **−0.0182**, ordinal
+  **−0.0185**, each positive on **0 of 4 isoforms**; the null control lands at **−0.5592**. ρ and
+  ST-RAE move together, so the "the objective works, the placement needs refitting" branch never
+  opens. Temperature is not an escape hatch: the soft-Spearman arm moves **0.0066 of macro ρ
+  across a 333× range of τ**. And the ceiling closes the family rather than the point estimates
+  doing it — an *oracle* convex blend of each arm's ranking with the control's, fitted per
+  (split, seed, isoform) on the scored rows, nets to **+0.0093 at best** once the **+0.0018** a
+  pure-noise arm earns merely for being an extra fitted degree of freedom is subtracted. More
+  seeds cannot reopen it: the effects are 5–25 SE wide in the wrong direction.
+- **That arm's real finding is the censoring policy, not the loss family.** To give a rank loss a
+  well-defined target we collapsed every censored row wider than a width threshold onto one
+  shared rank. Measured at matched τ and paired within (split, seed), **tie-collapse OFF minus ON
+  is +0.0543 ρ held out, positive on 30 of 30 units** (t +15.2), with the damage concentrated on
+  **CYP3A4 (−0.1616, t −28.2, 0 of 30)** — the isoform with the largest censored block. So the
+  policy registered to protect the arm is what crippled it, and the registered sensitivity arm is
+  what proved it. This also bounds an earlier finding of ours: that within-interval *ordering* is
+  noise licenses **abstaining** from an ordering, not **asserting equality** between those rows,
+  and a rank loss can only express the second.
 - **The ensemble's advantage over a plain LightGBM is unmeasurable.** It had been recorded at
   +0.0154 macro ρ. That comparison was not paired — the net was scored on its own split against
   LightGBM figures from a different one. Training a GBM on the exact complement of the net's
@@ -305,9 +329,123 @@ Recorded because they were silent failures that looked healthy:
 
 ## 10. Code
 
-<!-- TODO before 2026-11-03: publish the repository (or a redacted extract) and put the
-     reachable https:// link here, then tick "My code is open-source" on the submission
-     form. The form requires the link when that box is checked. -->
+This report and the method notes behind it are published at
+`https://github.com/Arnab28122000/openadmet-cyp-challenge`, with the structure track's page
+at `https://arnab28122000.github.io/openadmet-cyp-challenge/pose.html`. The submission form's
+"My code is open-source" box is **not** ticked: the box triggers a live reachability check on
+the link at submission time, and the link above is the report, not a full training repository.
+
+## 11. What the last fortnight closed, and the two bars that were wrong
+
+Everything below was measured after this report was first drafted. Each item is a family we
+can now say is closed, with the arm that closed it — not an opinion about what is unpromising.
+
+### 11.1 The representation is not the lever
+
+Roughly thirty arms had varied the head and never the input block, so one arm varied only the
+input block: MoLFormer-XL frozen and fine-tuned, CheMeleon (the organisers' own encoder),
+two random-projection width nulls and a random-init pretraining null, at **18 splits × 5 seeds
+= 108 units**.
+
+- **Every learned block fails.** Best is a fine-tuned MoLFormer-XL stacked on our 3,091
+  descriptor columns at **+0.0078 ρ** (t +11.03, 18/18 splits) against a +0.015 FAIL bar.
+  Handed those representations *instead of* our columns, every one loses on **0 of 18 splits
+  and 0 of 4 isoforms**.
+- **A frozen general chemical language model carries less than a random rotation of our own
+  columns**: `inc_molf − inc_rnd768` = **−0.0225**.
+- **"Foundation model" is not one lever, it is two.** CheMeleon clears its width null
+  (+0.0289) and beats MoLFormer-XL by **+0.0745**. A domain-pretrained D-MPNN fingerprint
+  carries real chemistry; a general-purpose chemical language model does not.
+- **Training against the metric beats changing the representation**, head to head on the same
+  embedding: `molf_ft − molf_lin` = **+0.0385**, five times the best stacked representation
+  gain in the arm.
+
+Independently corroborated from outside: the best-placed entry on this board with a published
+method report tried MolFormer, ChemBERTa and Uni-Mol and **excluded all three**.
+
+### 11.2 The stacking step harvests ρ from noise, so the null is not zero
+
+`stack_inc_rnd2048` — a random projection carrying no information — reads −0.0000 on six
+splits but **+0.0015 over 18** (t +2.36, 14/18). It is a tenth of the FAIL bar, so no verdict
+moves, but it means **every stacked gain must be priced against that floor, measured at its
+own split count, rather than against zero.** A null estimated on the same splits as the bar is
+itself an estimate with a standard error.
+
+We also withdraw one sentence from our own earlier write-up: "on CYP2D6 CheMeleon very nearly
+matches our descriptor columns" was a six-split artefact. On 18 splits the gap is **−0.0178**,
+about three times what the smaller sample showed. The caveat survives in direction only — 2D6
+is still the narrowest of the four gaps.
+
+### 11.3 A mechanistic "world model" cannot produce this label
+
+We designed and gated a simulated-liver arm — enzymes, reactions, folding, genotype to
+phenotype. It closes on three independent measurements, and the first one holds at any budget:
+
+1. **The causal arrow points the wrong way.** Every runnable mechanistic simulator (PK-Sim/OSP,
+   Simcyp, GastroPlus) takes in-vitro Ki/IC50 as a **required input parameter** and emits
+   clinical interaction ratios as output. A simulator that consumes pIC50 cannot generate it.
+   Genotype is inadmissible separately: the assay is one recombinant enzyme from one vendor
+   lot, so the allele is a **constant**. The receptor is fixed per isoform, so folding terms
+   are rank-invariant.
+2. **External mechanistic data does not cover these molecules.** Union coverage is **148 of
+   6,895 (2.1%)**, and of the 750 scored compounds the union annotates **four — all four being
+   contamination hits**, so clean coverage of the scored set is **zero**. The ceiling cannot be
+   raised by looking harder: only 5.2% of our compounds are at clinical phase ≥ 1, and every
+   drug-centric database contains drugs.
+3. **The one form needing no external data also fails, on prevalence.** A reaction cascade over
+   our own structures (67,941 generation-1 metabolites, 11.1 per parent) scored for 31
+   reactive-warhead classes: **0 of 31** satisfy enrichment ≥ 2.0 *and* ≥ 4% firing *and*
+   metabolite-level above parent-level. The enriched classes and the frequent classes are
+   **disjoint sets**. The mechanism was real — catechol fires on 0.0000 of parents and 0.0434
+   of metabolites, so the cascade genuinely manufactures a warhead no parent featurisation
+   computes, at permutation p = 0.009 — and it fails on **magnitude**.
+
+### 11.4 There is nothing in the blind set's neighbourhood to retrieve
+
+A competitor's published method retrieves catalogue near-neighbours of the published blind
+structures and admits them as unlabelled training rows. Tested here, retrieval yielded **154
+molecules** at the required similarity against a bar of 2,000, covering 111 of 750 blind
+compounds against a bar of 400. **The null is the finding:** the same retrieval against 750
+*random* catalogue queries yields **6,729 — 44× the real result**. So the retrieval works and
+is genuinely conditioned on the blind set; the test compounds' nearest neighbours are **each
+other** (0.5866 internally), not anything in a purchasable catalogue.
+
+### 11.5 A difference of two correlated predictions cancels the signal
+
+The TDI label is defined by a shift between a pre-incubated and a direct pIC50, so we predicted
+both and scored by the difference. It fails at **−0.1830 macro AUC** (t −22.28, 0/6 and 0/6
+splits positive). The oracle is fine — the *true* pre-incubated pIC50 scores AUC 0.913 — but
+our two predicted legs correlate at **r = 0.970**, leaving the difference a dynamic range of
+**0.266 pIC50 units against the 0.301 log cut the label is defined by.** A difference does not
+compound relative errors the way a product does, which was our argument for it; it cancels the
+signal along with them.
+
+### 11.6 Two bars we registered were not bars
+
+Both are recorded because the error is invisible unless you do the arithmetic.
+
+- **A pre-registered threshold is not a bar until you know how often a true-zero arm clears
+  it.** On the structure track we registered a live improvement of +0.030. A single live read
+  estimates the all-compound effect with sampling sd ≈ 0.046, so **a true-zero arm clears
+  +0.030 about 26% of the time** — with no replication possible, since there is one slot, a
+  12-hour cooldown, and blind references. A sound 5% bar there is ≈ +0.08.
+- **On the regression board, "beat our own rank by one place" is not a decidable
+  proposition.** One place is ≈ +0.0020 ρ, which a true-zero arm clears on a single read about
+  42% of the time. The smallest regression bar that survives its own null is +0.0150.
+
+### 11.7 Structure track: closed on method, and the figures corrected
+
+Our structure entry stands at **LDDT-PLI 0.4241 / BiSyRMSD 3.8148 / LDDT-LP 0.8056**, which is
+the row we restored after a consensus candidate scored 0.4207 and lost. Every remaining method
+lever has been closed by an arm that ran: the template family by two independent censuses, the
+re-docking arm at 2 of 9 pairs (permutation p = 0.857) with its void control firing, and the
+alternative co-folding model by the same evidence that killed the selector.
+
+One arithmetic correction to our earlier structure note: we claimed the per-compound
+denominator "cannot be 20". That is false — the equations identify the *ratio* of scored
+compounds to weight, not the count. What actually holds is stronger: the scorer's bootstrap
+seed is fixed, so every published figure is an exact deterministic weighted mean, the bound
+tightens to **n ≤ 13**, and the weights are not uniform (they vary ±5%).
 
 ---
 
